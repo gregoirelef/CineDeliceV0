@@ -9,7 +9,7 @@ const ErrorPage = () => {
     <meta name="description" content="Page d'erreur 500" />
 
     <div className="error-page">
-      <img src="../../../assets/img/error-page.webp" alt="error-page-image" className="error-image" />
+      <img src="/images/error-page.webp" alt="error-page-image" className="error-image" />
       <Link to="/" className="home-link">
         <button className="btn btn-error-page">Retour à l'accueil</button>
       </Link>

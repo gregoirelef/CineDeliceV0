@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import RecipeCard from "../../component/RecipeCard/RecipeCard.jsx";
 import "./SearchResultPage.css";
 const SearchResultPage = () => {
@@ -12,15 +12,14 @@ const SearchResultPage = () => {
   const { filteredRecipes } = state || {};
   const motionTitle = state?.motion;
   const categoryTitle = state?.category;
-  // console.log(categoryTitle);
-  console.log(motionTitle);
+
 
   return (
     <>
       {filteredRecipes.length === 0 ? (
         <div className="no-recipes-found-container">
           <img
-            src="../../../assets/img/not-found.webp"
+            src="/images/not-found.webp"
             alt="une serveuse désolé de ne pas pouvoir répondre à une demande"
             className="no-recipes-found-img"
           />

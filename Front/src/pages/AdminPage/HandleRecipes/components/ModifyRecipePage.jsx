@@ -141,7 +141,7 @@ const ModifyRecipeForm = ({ recipes, setRecipes, motionsList }) => {
       setRecipes((prevList) => prevList.map((recipe) => (recipe.id === newRecipe.id ? fullRecipe : recipe)));
       // On redirige l'utilisateur vers la recette modifié
       navigate(`/recipes/${recipeId}`);
-      toast.success("la recette a bien été modifié");
+      toast.success("La recette a bien été modifié");
     } catch (error) {
       console.error("Erreur de modification:", error.message);
       toast.error(error.message);

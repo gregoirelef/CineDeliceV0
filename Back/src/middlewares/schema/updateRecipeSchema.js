@@ -13,9 +13,9 @@ export const updateRecipeSchema = Joi.object({
   // .max() : longueur maximale de caractères (ici 150)
   // .messages ({...}) : définit un messages d'erreurs personnalisés
   title: Joi.string().trim().min(3).max(150).messages({
-    "string.base": "Le title doit être une chaîne de caractères.", // Vérifie que la valeur est une chaîne de caractères
-    "string.min": "Le title doit comporter au moins 3 caractères.", // Vérifie que la chaîne a une longueur minimale de 3 caractères
-    "string.max": "Le title doit comporter 150 caractères au maximum.", // Vérifie que la chaîne a une longueur maximale de 150 caractères
+    "string.base": "Le titre doit être une chaîne de caractères.", // Vérifie que la valeur est une chaîne de caractères
+    "string.min": "Le titre doit comporter au moins 3 caractères.", // Vérifie que la chaîne a une longueur minimale de 3 caractères
+    "string.max": "Le titre doit comporter 150 caractères au maximum.", // Vérifie que la chaîne a une longueur maximale de 150 caractères
   }),
   // Définition de l'objet description
   // Joi.string() : vérifie que la valeur est une chaîne de caractères

@@ -95,14 +95,13 @@ const Carnet = ({ recipes }) => {
   // ==================== RENDU JSX ====================
   return (
     <>
-    {/* Balises qui seront intégrées dans le head */}
-     <title>Carnet de recettes | Ciné Délices</title>
-     <meta name="description" content="Explorez notre collection de recettes inspirées du cinéma." />
-     <meta name="keywords" content="Ciné délices, recettes, cinéma, cuisine, films" />
+      {/* Balises qui seront intégrées dans le head */}
+      <title>Carnet de recettes | Ciné Délices</title>
+      <meta name="description" content="Explorez notre collection de recettes inspirées du cinéma." />
+      <meta name="keywords" content="Ciné délices, recettes, cinéma, cuisine, films" />
 
       {/* Contenu de la page */}
       <section className="section__recipe-book">
-
         {/* H1 MASQUÉ POUR L'ACCESSIBILITÉ */}
         <h1 className="sr-only">Carnet de recette - Filtrer et découvrir les recettes inspirées du cinéma</h1>
 
@@ -110,7 +109,7 @@ const Carnet = ({ recipes }) => {
         <div className="filter-container">
           <div className="logo-container" data-aos="fade-down">
             <span className="line"></span>
-            <img src="../../../assets/img/logo.webp" alt="Logo de Ciné Délices" className="logo" />
+            <img src="/images/logo.webp" alt="Logo de Ciné Délices" className="logo" />
             <span className="line"></span>
           </div>
           {/* ==================== FILTRES PAR CATÉGORIE DE PLAT ==================== */}

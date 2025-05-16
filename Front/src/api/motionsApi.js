@@ -26,7 +26,6 @@ export async function createMotions(formData) {
     });
     // on récupère la réponse de l'API (ici la création d'un film)
     const dataMotion = await response.json();
-    console.log(dataMotion);
     // Vérification du succès de la réponse
     if (!response.ok) {
       throw new Error(dataMotion?.details?.[0] || "Une erreur est survenue lors de l'enregistrement en BDD");

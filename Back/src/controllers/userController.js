@@ -126,9 +126,9 @@ const userController = {
 
     // on stocke le refresh token dans un cookie HTTP-only
     res.cookie("refreshToken", refreshToken, {
-      httpOnly: true, // Protéger contre les attaques XSS
-      secure: true, // Si en production, le cookie sera sécurisé (HTTPS)
-      sameSite: "strict", // Protéger contre les attaques CSRF
+      httpOnly: true, // Ce cookie ne sera pas accessible en JavaScript côté client
+      secure: process.env.NODE_ENV === "production", // Si en production, le cookie sera sécurisé (HTTPS) == sera true. Sinon false
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Protéger contre les attaques CSRF
       maxAge: 7 * 24 * 60 * 60 * 1000, // Expiration dans 7 jours
     });
     // on envoie le token au client, il pourra le stocker pour s'authentifier plus tard
@@ -203,7 +203,7 @@ const userController = {
     res.cookie("refreshToken", newRefreshToken, {
       httpOnly: true, // Ce cookie ne sera pas accessible en JavaScript côté client
       secure: process.env.NODE_ENV === "production", // Si en production, le cookie sera sécurisé (HTTPS) == sera true. Sinon false
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Protéger contre les attaques CSRF
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Protéger contre les attaques CSRF (cross-site request forgery)
       maxAge: 7 * 24 * 60 * 60 * 1000, // Expiration dans 7 jours
     });
     // Réponse avec un message de succès, l'ID de l'utilisateur et son nouveau token
@@ -247,7 +247,7 @@ const userController = {
     res.clearCookie("refreshToken", {
       httpOnly: true, // Toujours pas accessible en JS par une attaque XSS
       secure: process.env.NODE_ENV === "production", // Si en production, le cookie sera sécurisé (HTTPS)
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Protéger contre les attaques CSRF
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Protéger contre les attaques CSRF (cross-site request forgery)
       maxAge: 0, // à 0 pour supprimer le cookie immédiatement
     });
     // console.log("Je suis dans la route Back");

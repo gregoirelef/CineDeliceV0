@@ -67,5 +67,7 @@ export const createRecipeSchema = Joi.object({
       "array.min": "Au moins un ingrédient est requis.",
       "any.required": "Les ingrédients sont requis.",
     }),
-  picture: Joi.any().optional(),
+  picture: Joi.any().required().messages({
+    "any.required": "Veuillez proposer une image pour la recette.",
+  }),
 });

@@ -12,7 +12,7 @@ export const updateMotionSchema = Joi.object({
     // .required(): propriété obligatoire
     // .messages ({...}) : définit un message d'erreurs personnalisés
     "string.base": "Le titre doit être une chaîne de caractères.",
-    "string.min": "Le titre doit doit comporter au moins 2 caractères .",
+    "string.min": "Le titre doit comporter au moins 2 caractères .",
     "string.max": "Le titre doit comporter 150 caractères au maximum .",
     "any.required": "Le titre est requis.",
   }),

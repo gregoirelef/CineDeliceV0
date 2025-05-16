@@ -100,14 +100,11 @@ const ModifyMotionForm = ({ motionsList }) => {
       formData.append("picture", image);
     }
 
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
 
     try {
       await modifyOneMotion(motionId, formData);
       navigate(`/user/admin`);
-      toast.success("l'oeuvre a bien été modifié");
+      toast.success("L'oeuvre a bien été modifiée");
     } catch (error) {
       console.error("Erreur de modification:", error.message);
       toast.error(error.message);

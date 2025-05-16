@@ -1,7 +1,7 @@
 /*=================================== IMAGE DE FOND =======================================*/
 
 .bg-home {
-  background-image: url(../../../assets/img/background-section.webp);
+  background-image: url("/images/background-section.webp");
   background-size: 320px;
   background-position: center;
   background-repeat: repeat;
@@ -47,7 +47,7 @@
 
 @media (min-width: 768px) {
   .section__presentation {
-    background-image: url("../assets/img/background-section.webp");
+    background-image: url("/images/background-section.webp");
     z-index: 1000;
     background-position: center;
     background-repeat: repeat-y;

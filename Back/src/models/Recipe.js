@@ -12,7 +12,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export class Recipe extends Model {
-
   get localeCreationDate() {
     return this.created_at.toLocaleDateString("fr-FR", {
       weekday: "long",
@@ -21,7 +20,7 @@ export class Recipe extends Model {
       day: "numeric",
     });
   }
-  
+
   get localeUpdateDate() {
     return this.updated_at.toLocaleDateString("fr-FR", {
       weekday: "long",
@@ -32,13 +31,13 @@ export class Recipe extends Model {
   }
 }
 
-// /**
-//  * On initialise le modèle Recipe avec les attributs et les options
-//  * @param {Object} sequelize - Instance de Sequelize
-//  * @param {Object} DataTypes - Types de données de Sequelize
-//  * @param {Object} Model - Classe de base pour les modèles Sequelize
-//  * @returns {void}
-//  */
+/**
+/* On initialise le modèle Recipe avec les attributs et les options
+/* @param {Object} sequelize - Instance de Sequelize
+/* @param {Object} DataTypes - Types de données de Sequelize
+/* @param {Object} Model - Classe de base pour les modèles Sequelize
+/* @returns {void}
+/*/
 Recipe.init(
   {
     title: {
@@ -47,7 +46,7 @@ Recipe.init(
     },
     picture: {
       type: DataTypes.TEXT,
-      allowNull: true,
+      allowNull: false,
     },
     description: {
       type: DataTypes.TEXT,
@@ -96,13 +95,10 @@ Recipe.beforeDestroy(async (recipe) => {
 //on utilise un 'Hook de Sequelize.
 //ici :beforeUpdate qui exécute la fonction avant la mise à jour d'une instance de modèle "Recipe"
 Recipe.beforeUpdate(async (recipe) => {
-
   // On vérifie si le champ "picture" a été modifié dans cette mise à jour
-  if (recipe.changed('picture')) {
-
-
+  if (recipe.changed("picture")) {
     // On récupère l'ancienne valeur du champ "picture" avant modification
-    const oldPicture = recipe.previous('picture');
+    const oldPicture = recipe.previous("picture");
 
     // Si une ancienne image existe (c’est-à-dire que ce n’est pas la première image ou qu’elle a bien été changée)
     if (oldPicture) {
@@ -120,4 +116,3 @@ Recipe.beforeUpdate(async (recipe) => {
     }
   }
 });
-

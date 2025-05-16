@@ -104,7 +104,7 @@ const Header = () => {
         <div className="navbar__items">
           <Link className="nav-link" to="/">
             <div className="header__branding">
-              <img src="../../../assets/img/logo.webp" alt="Logo de Ciné Délices" className="header__branding-logo" />
+              <img src="/images/logo.webp" alt="Logo de Ciné Délices" className="header__branding-logo" />
               <h1 className="header__branding-title">Ciné Délices</h1>
             </div>
           </Link>

@@ -51,7 +51,7 @@ const DeleteIngredients = ({ ingredientList, setIngredientList }) => {
         }
       },
       onCancel: () => {
-        console.log("Suppression annulée");
+        toast.info("Suppression annulée");
       },
     });
   };

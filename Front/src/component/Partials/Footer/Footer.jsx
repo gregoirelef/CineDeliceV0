@@ -13,7 +13,7 @@ const Footer = () => {
   return (
     <footer className="footer ">
       <div className="content has-text-centered">
-        <img src="../../../assets/img/logo.webp" alt="Logo" className="footer__logo" />
+        <img src="/images/logo.webp" alt="Logo" className="footer__logo" />
         <div className="footer__menu">
           <Link className="nav-link" to="/">
             Accueil
@@ -28,7 +28,7 @@ const Footer = () => {
           </Link>
 
           <Link className="nav-link" to="/login">
-            Connection
+            Connexion
           </Link>
 
           <Link className="nav-link" to="/register">

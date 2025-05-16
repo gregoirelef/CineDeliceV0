@@ -81,6 +81,8 @@ export const createMotionSchema = Joi.object({
     }),
 
   // Définition propriété picture
-  // .optionnal() : propriété optionnelle
-  picture: Joi.any().optional(),
+  // .required() : propriété obligatoire
+  picture: Joi.any().required().messages({
+    "any.required": "Veuillez proposer une image pour l'oeuvre", // Vérifie que la propriété est obligatoire
+  }),
 });

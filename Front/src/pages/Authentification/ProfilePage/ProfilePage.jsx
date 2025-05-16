@@ -136,7 +136,7 @@ const ProfilePage = () => {
 
       // Message de succès
       toast.success("Profil mis à jour avec succès !");
-      console.log(user);
+      
 
       //Réinitialise les champs du formulaire
       setNewPassword("");
@@ -180,7 +180,7 @@ const ProfilePage = () => {
         }
       },
       onCancel: () => {
-        console.log("Suppression annulée");
+        toast.info("Suppression annulée");
       },
     });
   };
@@ -196,7 +196,7 @@ const ProfilePage = () => {
       <div className="profile">
         <div className="profile-header">
           <h2 className="section-title profile-title">Mon Profil</h2>
-          <img src="../../../assets/img/serveuse.webp" alt="serveuse" className="profile-img" />
+          <img src="/images/serveuse.webp" alt="serveuse" className="profile-img" />
         </div>
         {!isEditing && (
           <div className="profile-overview">

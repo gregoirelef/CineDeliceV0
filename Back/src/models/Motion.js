@@ -12,13 +12,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export class Motion extends Model {}
-// /**
-//  * On initialise le modèle Motion avec les attributs et les options
-//  * @param {Object} sequelize - Instance de Sequelize
-//  * @param {Object} DataTypes - Types de données de Sequelize
-//  * @param {Object} Model - Classe de base pour les modèles Sequelize
-//  * @returns {void}
-//  */
+
+/**
+ * On initialise le modèle Motion avec les attributs et les options
+ * @param {Object} sequelize - Instance de Sequelize
+ * @param {Object} DataTypes - Types de données de Sequelize
+ * @param {Object} Model - Classe de base pour les modèles Sequelize
+ * @returns {void}
+ */
 Motion.init(
   {
     title: {
@@ -27,7 +28,7 @@ Motion.init(
     },
     picture: {
       type: DataTypes.TEXT,
-      allowNull: true,
+      allowNull: false,
     },
     release_date: {
       type: DataTypes.STRING(20),
@@ -73,16 +74,13 @@ Motion.beforeDestroy(async (motion) => {
   }
 });
 
-
 //on utilise un 'Hook de Sequelize.
 //ici : beforeUpdate qui permet realisé la fonction a la modification d'une instance de Motion
 Motion.beforeUpdate(async (motion) => {
-
   // On vérifie si le champ "picture" a été modifié dans cette mise à jour
-  if (motion.changed('picture')) {
-
+  if (motion.changed("picture")) {
     // On récupère l'ancienne valeur du champ "picture" avant modification
-    const oldPicture = motion.previous('picture');
+    const oldPicture = motion.previous("picture");
 
     // Si une ancienne image existe (c’est-à-dire que ce n’est pas la première image ou qu’elle a bien été changée)
     if (oldPicture) {

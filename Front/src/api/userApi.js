@@ -44,7 +44,7 @@ export async function createUser(pseudo, email, password) {
 }
 
 /**
- * 
+ *
  * @returns {string} - Le token d'accès
  * @throws {Error} - Si une erreur se produit lors de la récupération du token
  */
@@ -118,10 +118,10 @@ export async function loginUser(email, password) {
     // Relancer l'erreur pour qu'elle soit capturée côté formulaire
     throw new Error(errorMessage);
   }
-};
+}
 
 /**
- * 
+ *
  * @returns {Promise<Response>} - La réponse de la requête de déconnexion
  * @throws {Error} - Si une erreur se produit lors de la déconnexion
  */
@@ -212,7 +212,6 @@ export async function modifyUser(id, pseudo, email, password) {
     if (password && password.trim() !== "") {
       body.password = password;
     }
-    console.log(typeof id);
     // on effectue la requête PATCH vers la route paramétrée en back et l'id
     // on précise la méthode et le contenu du header avec le token
     const response = await authFetch(`${API_URL}/user/${id}`, {

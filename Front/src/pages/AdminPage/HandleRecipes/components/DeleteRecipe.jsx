@@ -36,7 +36,7 @@ const DeleteRecipe = ({ recipes, setRecipes }) => {
           // Réinitialise la sélection
           setRecipeId("");
 
-          // Affiche un message de succès
+          // Affiche un message de succèsp
           toast.success("Recette supprimée avec succès !");
         } catch (error) {
           // Gestion des erreurs côté client
@@ -61,7 +61,7 @@ const DeleteRecipe = ({ recipes, setRecipes }) => {
 
       // Fonction appelée si l'utilisateur annule la suppression
       onCancel: () => {
-        console.log("Suppression annulée");
+       toast.info("Suppression annulée");
       },
     });
   };
@@ -75,7 +75,7 @@ const DeleteRecipe = ({ recipes, setRecipes }) => {
           <div className="form-group">
             <label htmlFor="recipe_id">Liste de recettes</label>
             <select id="recipe_id" name="recipe_id" value={recipeId} onChange={(e) => setRecipeId(e.target.value)} required>
-              <option value="">Choisis l'oeuvre à supprimer dans la liste</option>
+              <option value="">Choisis la recette à supprimer dans la liste</option>
               {/*Map pour afficher le menu déroulant */}
               {recipes.map((recipe) => (
                 <option key={recipe.id} value={recipe.id}>

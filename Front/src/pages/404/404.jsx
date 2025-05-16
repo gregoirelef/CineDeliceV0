@@ -15,7 +15,7 @@ const NotFoundPage = () => {
     <meta name="description" content="Page d'erreur 404" />
 
     <div className="error-page">
-      <img src="../../../assets/img/404.webp" alt="404 image" className="error-image" />
+      <img src="/images/404.webp" alt="404 image" className="error-image" />
       <Link to="/" className="home-link">
         <button className="btn btn-error-page ">Retour à l'accueil</button>
       </Link>

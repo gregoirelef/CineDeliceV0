@@ -58,9 +58,9 @@ const AdminPage = ({ recipes, setRecipes }) => {
   // ----------------- RENDU DU COMPOSANT -----------------
   return (
     <>
-    {/* Balises qui seront intégrées dans le head */}
-    <title>Page d'administrateur | Ciné Délices</title>
-    <meta name="description" content="page d'administrateur" />
+      {/* Balises qui seront intégrées dans le head */}
+      <title>Page d'administrateur | Ciné Délices</title>
+      <meta name="description" content="page d'administrateur" />
 
       <div className="admin__page-container">
         {/* Barre de navigation latérale. setActiveForm permet de changer de formulaire */}

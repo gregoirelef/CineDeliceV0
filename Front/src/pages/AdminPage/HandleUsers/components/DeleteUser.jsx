@@ -73,7 +73,7 @@ const DeleteUser = () => {
 
       // Fonction appelée si l'utilisateur annule la suppression
       onCancel: () => {
-        console.log("Suppression annulée");
+        toast.info("Suppression annulée");
       },
     });
   };
