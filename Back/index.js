@@ -18,7 +18,7 @@ app.use(
     // On définit certains noms de domaines qu'on veut autoriser (certaines origines de notre appel)
     origin: (origin, callback) => {
       // Autoriser toutes les origines "localhost" ou "127.0.0.1", peu importe le port
-      if (!origin || /^(http:\/\/localhost:\d+|http:\/\/127\.0\.0\.1:\d+)$/.test(origin)) {
+      if (!origin || /^(http:\/\/localhost:\d+|http:\/\/127\.0\.0\.1:\d+)$/.test(origin) || origin === process.env.FRONT_URL) {
         callback(null, true); // Autoriser l'origine
       } else {
         callback(new Error("Not allowed by CORS")); // Bloquer l'origine
