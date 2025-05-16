@@ -1,0 +1,33 @@
+.section__result {
+  padding: 2rem;
+}
+
+.result-container .box {
+  max-width: 500px;
+}
+
+.no-recipes-found-container {
+  font-size: var(--fs-container-title);
+  font-family: var(--font-title);
+  padding: 2rem 1rem 4rem 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-recipes-found-btn {
+  font-size: var(--fs-subtitle);
+  background-color: var(--orange);
+  color: var(--dark-blue) !important;
+  padding: 1.5rem;
+  animation: pulse-scale 3s infinite ease-in-out;
+}
+
+@media (min-width: 1200px) {
+  .no-recipes-found-btn {
+    font-size: var(--fs-container-title);
+  }
+}
