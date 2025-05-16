@@ -5,7 +5,7 @@
     "startprod": "npm run start --prefix Back",
     "build": "npm run build --prefix Front",
 
-    "start:front": "cd Front && npm run preview",
+    "start:front": "cd Front && npm run preview -- --host",
 
     "start:all": "concurrently \"npm run startprod\" \"npm run start:front\""
 
