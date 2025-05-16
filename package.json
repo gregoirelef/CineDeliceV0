@@ -3,10 +3,9 @@
   "scripts": {
 
     "start": "npm run start --prefix Back",
+    "build": "npm run build --prefix Front",
 
-    "start:back": "cd Back && npm run dev",
-
-    "start:front": "cd Front && npm run dev",
+    "start:front": "cd Front && npm run preview",
 
     "start:all": "concurrently \"npm run start:back\" \"npm run start:front\""
 
