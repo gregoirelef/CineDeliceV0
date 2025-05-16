@@ -2,12 +2,12 @@
 
   "scripts": {
 
-    "start": "npm run start --prefix Back",
+    "startprod": "npm run start --prefix Back",
     "build": "npm run build --prefix Front",
 
     "start:front": "cd Front && npm run preview",
 
-    "start:all": "concurrently \"npm run start:back\" \"npm run start:front\""
+    "start:all": "concurrently \"npm run startprod\" \"npm run start:front\""
 
   },
 
