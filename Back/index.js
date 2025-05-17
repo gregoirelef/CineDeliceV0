@@ -13,23 +13,20 @@ app.use(cookieParser()); // Le middleware pour parser les cookies
 
 app.use(express.json()); // Middleware pour parser le corps des requêtes JSON
 
+const allowedOrigins = process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(",") : ["http://localhost:5173"];
+
 app.use(
   cors({
-    // On définit certains noms de domaines qu'on veut autoriser (certaines origines de notre appel)
     origin: (origin, callback) => {
-      // Autoriser toutes les origines "localhost" ou "127.0.0.1", peu importe le port
-      if (!origin || /^(http:\/\/localhost:\d+|http:\/\/127\.0\.0\.1:\d+)$/.test(origin) || origin === process.env.FRONT_URL) {
-        callback(null, true); // Autoriser l'origine
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS")); // Bloquer l'origine
+        callback(new Error("Not allowed by CORS"));
       }
     },
-    credentials: true, //Pour permettre au cookies de communiquer entre le front et le back
-    allowedHeaders: "Content-Type, Authorization, X-Requested-With", // Ajoute les headers autorisés
-    // - 'Content-Type' : indique le type de données envoyées (ex: JSON)
-    // - 'Authorization' : souvent utilisé pour envoyer un token d'authentification
-    // - 'X-Requested-With' : indique que la requête vient d'AJAX/fetch,
-    methods: "GET, POST, PUT, DELETE, PATCH", // Spécifie les méthodes autorisées
+    credentials: true,
+    allowedHeaders: "Content-Type, Authorization, X-Requested-With",
+    methods: "GET, POST, PUT, DELETE, PATCH",
   })
 );
 // On définit le dossier public pour les fichiers statiques
@@ -43,7 +40,7 @@ app.use(router);
 // Middleware gestion des erreurs
 app.use(errorHandler);
 
-
-app.listen(process.env.PORT, () => {  // On écoute sur le port défini dans le fichier .env
+app.listen(process.env.PORT, () => {
+  // On écoute sur le port défini dans le fichier .env
   console.log(`Listening on ${process.env.BASE_URL}:${process.env.PORT}`); // Affiche l'URL d'écoute
 });
