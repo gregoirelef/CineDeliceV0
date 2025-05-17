@@ -9,7 +9,6 @@ import { swaggerUi, swaggerSpec } from "./docs/swagger/swagger.js";
 
 const app = express(); // On crée une instance d'Express
 
-// app.set("trust proxy", 1); // // Active la confiance du proxy pour Express (important derrière nginx)
 
 app.use(cookieParser()); // Le middleware pour parser les cookies
 
