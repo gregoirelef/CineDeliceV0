@@ -130,6 +130,7 @@ const userController = {
       secure: process.env.NODE_ENV === "production", // Si en production, le cookie sera sécurisé (HTTPS) == sera true. Sinon false
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Protéger contre les attaques CSRF
       maxAge: 7 * 24 * 60 * 60 * 1000, // Expiration dans 7 jours
+      domain: '.gregoirelef-server.eddi.cloud' // Domaine parent commun
     });
     // on envoie le token au client, il pourra le stocker pour s'authentifier plus tard
     return res.json({
@@ -205,6 +206,7 @@ const userController = {
       secure: process.env.NODE_ENV === "production", // Si en production, le cookie sera sécurisé (HTTPS) == sera true. Sinon false
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Protéger contre les attaques CSRF (cross-site request forgery)
       maxAge: 7 * 24 * 60 * 60 * 1000, // Expiration dans 7 jours
+      domain: '.gregoirelef-server.eddi.cloud' // Domaine parent commun
     });
     // Réponse avec un message de succès, l'ID de l'utilisateur et son nouveau token
     res.status(200).json({ message: "Utilisateur modifié avec succès", token: newAccessToken });
@@ -249,6 +251,7 @@ const userController = {
       secure: process.env.NODE_ENV === "production", // Si en production, le cookie sera sécurisé (HTTPS)
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Protéger contre les attaques CSRF (cross-site request forgery)
       maxAge: 0, // à 0 pour supprimer le cookie immédiatement
+      domain: '.gregoirelef-server.eddi.cloud' // Domaine parent commun
     });
     // console.log("Je suis dans la route Back");
 
