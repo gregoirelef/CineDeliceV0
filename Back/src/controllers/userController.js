@@ -130,6 +130,7 @@ const userController = {
       secure: process.env.NODE_ENV === "production", // Si en production, le cookie sera sécurisé (HTTPS) == sera true. Sinon false
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Protéger contre les attaques CSRF
       maxAge: 7 * 24 * 60 * 60 * 1000, // Expiration dans 7 jours
+      domain: ".gregoirelef-server.eddi.cloud"
     });
     // on envoie le token au client, il pourra le stocker pour s'authentifier plus tard
     return res.json({
