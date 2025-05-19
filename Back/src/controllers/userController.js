@@ -289,7 +289,7 @@ const userController = {
         <p style="color: #01204e;">Vous avez demandé à réinitialiser votre mot de passe.<br>
         Cliquez sur le bouton ci-dessous pour choisir un nouveau mot de passe :</p>
         <div style="text-align: center; margin: 32px 0;">
-          <a href="${process.env.FRONT_URL}/reset-password/${token}"
+          <a href="${process.env.FRONT_URL}/resetPassword/${token}"
              style="display: inline-block; padding: 14px 28px; background: #f85525; color: #fff; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 1.1rem; box-shadow: 0 2px 8px #faa968;">
             Réinitialiser mon mot de passe
           </a>
