@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from "react";
 import toast from "../../../../utils/toast.js";
 import { deleteOneUser, getAllUsers } from "../../../../api/adminApi.js";
-
+import { useErrorHandler } from "../../../../api/apiErrorHandler.js";
 
 /**
- * 
+ *
  * @returns {JSX.Element} Formulaire de suppression d'un utilisateur
  */
 
 const DeleteUser = () => {
+  /**
+   * @hook
+   * hook pour la gestion d'erreur
+   */
+  const handleError = useErrorHandler(); // Hook de gestion d'erreurs
   const [usersList, setUsersList] = useState([]);
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
     const loadUsers = async () => {
-      const usersData = await getAllUsers();
-      setUsersList(usersData);
+      try {
+        const usersData = await getAllUsers();
+        setUsersList(usersData);
+      } catch (error) {
+        handleError(error);
+      }
     };
     loadUsers();
   }),
@@ -51,6 +60,7 @@ const DeleteUser = () => {
           // Affiche un message de succès
           toast.success("Utilisateur supprimé avec succès !");
         } catch (error) {
+          handleError(error);
           // Gestion des erreurs côté client
           if (error.message) {
             try {
@@ -62,7 +72,7 @@ const DeleteUser = () => {
               });
             } catch {
               // Si l'erreur ne peut pas être parsée, affiche un message générique
-              toast.error("Une erreur est survenue : " + error.message);
+              toast.error("Une erreur est survenue ");
             }
           } else {
             // Si l'erreur est inconnue, affiche un message par défaut

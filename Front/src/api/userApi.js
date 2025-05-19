@@ -16,31 +16,27 @@ const API_URL = import.meta.env.VITE_API_URL;
  * @throws {Error} - Si une erreur se produit lors de la création de l'utilisateur.
  */
 export async function createUser(pseudo, email, password) {
-  // on met dans un try-catch pour récupérer les erreurs
-  try {
-    // on fait la demande API avec la route paramétrée du back
-    // on précise la methode et le contenu du header
-    const response = await fetch(`${API_URL}/user/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // on transforme le body en string
-      body: JSON.stringify({ pseudo, email, password }),
-    });
-    // on récupère la réponse de l'API (ici la création d'un user)
-    const user = await response.json();
-    // on vérifie que l'on a une réponse positive
-    if (!response.ok) {
-      throw new Error(user?.details?.[0] || "Erreur lors de la création de l'utilisateur");
-    }
-    // Renvoie le user créé si tout va bien
-    return user;
-    // si une erreur survient on l'indique
-  } catch (error) {
-    console.error("Erreur dans createUser:", error.message);
+  // on fait la demande API avec la route paramétrée du back
+  // on précise la methode et le contenu du header
+  const response = await fetch(`${API_URL}/user/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    // on transforme le body en string
+    body: JSON.stringify({ pseudo, email, password }),
+  });
+  // on récupère la réponse de l'API (ici la création d'un user)
+  const user = await response.json();
+  // on vérifie que l'on a une réponse positive
+  if (!response.ok) {
+    const error = new Error(user?.details?.[0] || "Erreur lors de la connexion");
+    error.response = response;
+    error.status = response.status; //  on attache le status
     throw error;
   }
+  // Renvoie le user créé si tout va bien
+  return user;
 }
 
 /**
@@ -56,8 +52,14 @@ export async function refreshAccessToken() {
       credentials: "include", //Envoie les cookies
     });
 
-    if (!response.ok) throw new Error("Echec du rafraichissement du token");
     const data = await response.json();
+
+    if (!data.ok) {
+      const error = new Error(data?.details?.[0] || "Erreur lors de la connexion");
+      error.response = response;
+      error.status = response.status; //  on attache le status
+      throw error;
+    }
     // Dans la data renvoyée on prend le token et on le stocke dans le local storage
     setAuthToken(data.token);
 
@@ -83,41 +85,34 @@ export async function refreshAccessToken() {
  * @throws {Error} - Si une erreur se produit lors de la connexion de l'utilisateur.
  */
 export async function loginUser(email, password) {
-  // on met dans un try-catch pour recupérer les erreurs
-  try {
-    // on effectue la requête POST vers la route de login
-    // on précise la methode et le contenu du header
-    const response = await fetch(`${API_URL}/user/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      // conversion des données en JSON (string)
-      body: JSON.stringify({ email, password }),
-    });
-    // Si la réponse est un code de status 429 (rate limit), on la gère spécifiquement
-    if (response.status === 429) {
-      // La réponse du backend contient un message d'erreur en texte brut ou JSON
-      const errorText = "Trop de tentatives, veuillez réessayer dans 15 minutes.";
-      throw new Error(errorText); // On lance l'erreur avec le message du backend
-    }
-    // Si la réponse est OK, on essaye de la parser en JSON
-    const user = await response.json();
-    // on vérifie que l'on a une réponse positive
-    if (!response.ok) {
-      throw new Error(user?.details?.[0] || "Erreur lors de la connexion");
-    }
-    // Renvoie le user loggé si tout va bien
-    return user;
-    // si une erreur survient on l'indique
-  } catch (error) {
-    console.error("Erreur dans loginUser:", error.message);
-    // Si l'erreur ne contient pas de message, on lui donne un message par défaut
-    const errorMessage = error?.message || "Une erreur est survenue, veuillez réessayer plus tard.";
-    // Relancer l'erreur pour qu'elle soit capturée côté formulaire
-    throw new Error(errorMessage);
+  // on effectue la requête POST vers la route de login
+  // on précise la methode et le contenu du header
+  const response = await fetch(`${API_URL}/user/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    // conversion des données en JSON (string)
+    body: JSON.stringify({ email, password }),
+  });
+  // Si la réponse est un code de status 429 (rate limit), on la gère spécifiquement
+  if (response.status === 429) {
+    const error = new Error("Trop de tentatives, veuillez réessayer dans 15 minutes.");
+    error.status = 429; // <== Ajout important
+    throw error;
   }
+  // Si la réponse est OK, on essaye de la parser en JSON
+  const user = await response.json();
+  // on vérifie que l'on a une réponse positive
+  if (!response.ok) {
+    const error = new Error(user?.details?.[0] || "Erreur lors de la connexion");
+    error.response = response;
+    error.status = response.status; //  on attache le status
+    throw error;
+  }
+  // Renvoie le user loggé si tout va bien
+  return user;
 }
 
 /**
@@ -127,24 +122,16 @@ export async function loginUser(email, password) {
  */
 
 export async function logoutUser() {
-  try {
-    // on effectue la requête POST vers la route de logout
-    const loggedOut = await fetch(`${API_URL}/user/logout`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    // on vérifie que l'on a une réponse positives
-    return loggedOut;
-  } catch (error) {
-    console.error("Erreur dans logoutUser:", error.message);
-    // Si l'erreur ne contient pas de message, on lui donne un message par défaut
-    const errorMessage = error?.message || "Une erreur est survenue lors de la déconnexion, veuillez réessayer plus tard.";
-    // Relancer l'erreur pour qu'elle soit capturée côté formulaire
-    throw new Error(errorMessage);
-  }
+  // on effectue la requête POST vers la route de logout
+  const loggedOut = await fetch(`${API_URL}/user/logout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+  // on vérifie que l'on a une réponse positives
+  return loggedOut;
 }
 
 /**
@@ -158,28 +145,26 @@ export async function logoutUser() {
  * @throws {Error} - Si une erreur se produit lors de la vérification de l'utilisateur.
  */
 export async function verifyUser(password) {
-  try {
-    // on effectue la requête POST vers la route paramétrée en back
-    // on précise la méthode et le contenu du header avec le token
-    const response = await authFetch(`${API_URL}/user/verify`, {
-      method: "POST",
-      credentials: "include",
-      // on transforme le body en string JSON
-      body: JSON.stringify({ password }),
-    });
-    // Si la réponse est OK, on essaye de la parser en JSON
-    const result = await response.json();
-    // on véifie que l'on ai une réponse positive
-    if (!response.ok) {
-      throw new Error(result?.details?.[0] || "Erreur lors de la vérification");
-    }
-    // Renvoie le resultat
-    return result;
-    // si une erreur survient on l'indique
-  } catch (error) {
-    console.error("Erreur dans verifyUser:", error.message);
+  // on effectue la requête POST vers la route paramétrée en back
+  // on précise la méthode et le contenu du header avec le token
+  const response = await authFetch(`${API_URL}/user/verify`, {
+    method: "POST",
+    credentials: "include",
+    // on transforme le body en string JSON
+    body: JSON.stringify({ password }),
+  });
+  // Si la réponse est OK, on essaye de la parser en JSON
+  const result = await response.json();
+
+  // on véifie que l'on ai une réponse positive
+  if (!response.ok) {
+    const error = new Error(result?.details?.[0] || "Erreur lors de la connexion");
+    error.response = response; //  on attache le status
     throw error;
   }
+  // Renvoie le resultat
+  return result;
+  // si une erreur survient on l'indique
 }
 
 /**
@@ -195,45 +180,41 @@ export async function verifyUser(password) {
  * @throws {Error} - Si une erreur se produit lors de la modification de l'utilisateur.
  */
 export async function modifyUser(id, pseudo, email, password) {
-  try {
-    // On crée la variable body qui contient pseudo et email obligatoirement
-    // Mais contient password seulement si celui-ci est rempli, sinon il est évincé
-    // Création de l'objet body, en excluant les champs vides
-    const body = {};
-    // Ajoute le pseudo seulement s'il est présent et non vide
-    if (pseudo && pseudo.trim() !== "") {
-      body.pseudo = pseudo;
-    }
-    // Ajoute l'email seulement s'il est présent et non vide
-    if (email && email.trim() !== "") {
-      body.email = email;
-    }
-    // Ajoute le mot de passe seulement s'il est présent et non vide
-    if (password && password.trim() !== "") {
-      body.password = password;
-    }
-    // on effectue la requête PATCH vers la route paramétrée en back et l'id
-    // on précise la méthode et le contenu du header avec le token
-    const response = await authFetch(`${API_URL}/user/${id}`, {
-      method: "PATCH",
-      credentials: "include",
+  // On crée la variable body qui contient pseudo et email obligatoirement
+  // Mais contient password seulement si celui-ci est rempli, sinon il est évincé
+  // Création de l'objet body, en excluant les champs vides
+  const body = {};
+  // Ajoute le pseudo seulement s'il est présent et non vide
+  if (pseudo && pseudo.trim() !== "") {
+    body.pseudo = pseudo;
+  }
+  // Ajoute l'email seulement s'il est présent et non vide
+  if (email && email.trim() !== "") {
+    body.email = email;
+  }
+  // Ajoute le mot de passe seulement s'il est présent et non vide
+  if (password && password.trim() !== "") {
+    body.password = password;
+  }
+  // on effectue la requête PATCH vers la route paramétrée en back et l'id
+  // on précise la méthode et le contenu du header avec le token
+  const response = await authFetch(`${API_URL}/user/${id}`, {
+    method: "PATCH",
+    credentials: "include",
 
-      // on transforme le body en string JSON
-      body: JSON.stringify(body),
-    });
-    // Si la réponse est OK, on essaye de la parser en JSON
-    const user = await response.json();
-    // on vrifie que l'on ai une réponse positive
-    if (!response.ok) {
-      throw new Error(user.details?.[0] || "Erreur lors de la modification");
-    }
-    // Renvoie le resultat
-    return user;
-    // si une erreur survient on l'indique
-  } catch (error) {
-    console.error("Erreur dans la modification", error.message);
+    // on transforme le body en string JSON
+    body: JSON.stringify(body),
+  });
+  // Si la réponse est OK, on essaye de la parser en JSON
+  const user = await response.json();
+  // on vrifie que l'on ai une réponse positive
+  if (!response.ok) {
+    const error = new Error(user?.details?.[0] || "Erreur lors de la connexion");
+    error.response = response; //  on attache le status
     throw error;
   }
+  // Renvoie le resultat
+  return user;
 }
 
 /**
@@ -245,28 +226,23 @@ export async function modifyUser(id, pseudo, email, password) {
  * @throws {Error} - Si une erreur se produit lors de l'envoi de l'e-mail
  */
 export async function forgotPassword(email) {
-  try {
-    // on effectue la requête POST vers la route de l'email de réinitialisation
-    const response = await fetch(`${API_URL}/user/forgotPassword`, {
-      // on précise la méthode et le contenu du header
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email }),
-    });
-    // Si la réponse est OK, on essaye de la parser en JSON
-    const data = await response.json();
-    if (!response.ok) {
-      // Si la réponse n'est pas OK, on lance une erreur
-      throw new Error(data?.details?.[0] || "Erreur lors de l'envoi de l'e-mail de réinitialisation");
-    }
-    return data;
-  } catch (error) {
-    // Si une erreur survient, on l'indique
-    console.error("Impossible d'envoyer un e-mail de réinitialisation", error.message);
+  // on effectue la requête POST vers la route de l'email de réinitialisation
+  const response = await fetch(`${API_URL}/user/forgotPassword`, {
+    // on précise la méthode et le contenu du header
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  });
+  // Si la réponse est OK, on essaye de la parser en JSON
+  const data = await response.json();
+  if (!response.ok) {
+    const error = new Error(data?.details?.[0] || "Erreur lors de la connexion");
+    error.response = response; //  on attache le status
     throw error;
   }
+  return data;
 }
 
 /**
@@ -280,27 +256,24 @@ export async function forgotPassword(email) {
  * @throws {Error} - Si une erreur se produit lors de la réinitialisation du mot de passe
  */
 export async function resetPassword(newPassword, confirm, token) {
-  try {
-    // on effectue la requête POST vers la route de réinitialisation du mot de passe
-    // on précise la méthode et le contenu du header
-    const response = await fetch(`${API_URL}/user/resetPassword/${token}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ newPassword, confirm }),
-    });
-    // Si la réponse est OK, on essaye de la parser en JSON
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data?.details?.[0] || "Erreur lors de la réinitialisation du mot de passe");
-    }
-    return data;
-  } catch (error) {
-    // Si une erreur survient, on l'indique
-    console.error("Erreur lors de la réinitialisation du mot de passe", error.message);
+  // on effectue la requête POST vers la route de réinitialisation du mot de passe
+  // on précise la méthode et le contenu du header
+  const response = await fetch(`${API_URL}/user/resetPassword/${token}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ newPassword, confirm }),
+  });
+  // Si la réponse est OK, on essaye de la parser en JSON
+  const data = await response.json();
+  if (!response.ok) {
+    const error = new Error(data?.details?.[0] || "Erreur lors de la connexion");
+    error.response = response;
+    error.status = response.status; //  on attache le status
     throw error;
   }
+  return data;
 }
 
 /**
@@ -312,20 +285,14 @@ export async function resetPassword(newPassword, confirm, token) {
  * @throws {Error} - Si une erreur se produit lors de la suppression de l'utilisateur.
  */
 export async function deleteMe(id) {
-  try {
-    // on effectue la requête DELETE vers la route parrametrer en back et l'id
-    // on précise la methode et le contenue du hearder avec le token
-    const response = await fetch(`${API_URL}/user/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
-    // on récupere la réponse de l'API (ici la confirmation de la supression du user)
-    const deletedUser = await response.json();
-    // Renvoie le resultat
-    return deletedUser;
-    // si une erreur survient on l'indique
-  } catch (error) {
-    console.error("Erreur dans la suppression de l'user:", error.message);
-    throw error;
-  }
+  // on effectue la requête DELETE vers la route parrametrer en back et l'id
+  // on précise la methode et le contenue du hearder avec le token
+  const response = await authFetch(`${API_URL}/user/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  // on récupere la réponse de l'API (ici la confirmation de la supression du user)
+  const deletedUser = await response.json();
+  // Renvoie le resultat
+  return deletedUser;
 }

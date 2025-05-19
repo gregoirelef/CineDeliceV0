@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import { createIngredient } from "../../../../api/adminApi.js";
 import toast from "../../../../utils/toast.js";
+import { useErrorHandler } from "../../../../api/apiErrorHandler.js";
 
 const AddIngredientForm = ({ setIngredientList }) => {
+  // ----------------- HOOK D'ERREUR-----------------
+  /**
+   * @hook
+   * hook pour la gestion d'erreur
+   */
+  const handleError = useErrorHandler(); // Hook de gestion d'erreurs
   const [ingredientName, setIngredientName] = useState("");
   // ----------------- Fonction concernant l'envoi des formulaires -----------------
 
@@ -24,6 +31,7 @@ const AddIngredientForm = ({ setIngredientList }) => {
 
       toast.success("Ingrédient créé avec succès !");
     } catch (error) {
+      handleError(error);
       if (error.message) {
         try {
           // Si l'erreur est une chaîne JSON contenant les messages d'erreur Joi

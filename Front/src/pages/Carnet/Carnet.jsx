@@ -25,6 +25,11 @@ import { useErrorHandler } from "../../api/apiErrorHandler.js";
  /* ---------------------------------------------------------------------------------------------- */
 
 const Carnet = ({ recipes }) => {
+  // ----------------- HOOK D'ERREUR-----------------
+  /**
+   * @hook
+   * hook pour la gestion d'erreur
+   */
   const handleError = useErrorHandler(); // Hook de gestion d'erreurs
 
   // ==================== ÉTATS ====================

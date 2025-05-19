@@ -46,8 +46,6 @@ export function validate(schema) {
     // Si la validation réussit, on remplace req.body par les données validées et nettoyées
     req.body = validation.value;
 
-    console.log(req.body); // Debug : log les données validées
-
     // Passe au middleware ou contrôleur suivant
     next();
   };

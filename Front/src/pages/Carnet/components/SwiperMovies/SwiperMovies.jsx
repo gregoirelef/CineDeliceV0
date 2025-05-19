@@ -47,8 +47,8 @@ const SwiperMovies = ({ motions }) => {
               navigate("/search-results", {
                 state: {
                   filteredRecipes: motion.recipes,
+                  motion,
                   source: "motion",
-                  motion: motion.title,
                 },
               })
             }
@@ -57,6 +57,9 @@ const SwiperMovies = ({ motions }) => {
           </SwiperSlide>
         ))}
       </Swiper>
+      <button className="btn btn-see-more-motions" onClick={() => navigate("/motions", { state: { motions } })}>
+        Voir tous les films
+      </button>
     </>
   );
 };

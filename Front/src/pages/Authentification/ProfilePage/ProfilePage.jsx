@@ -13,6 +13,8 @@ import { deleteMe, modifyUser, verifyUser } from "../../../api/index.js";
 import { useUserStore } from "../../../store/store.js";
 import { useNavigate } from "react-router-dom";
 import { useErrorHandler } from "../../../api/apiErrorHandler.js";
+//React Icons
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 /** ----------------------------------------------------------------------------------------------
  *  @description Page de profil utilisateur, permettant de visualiser et modifier ses informations personnelles.
@@ -21,6 +23,12 @@ import { useErrorHandler } from "../../../api/apiErrorHandler.js";
  /* ---------------------------------------------------------------------------------------------- */
 
 const ProfilePage = () => {
+  // ----------------- HOOK D'ERREUR-----------------
+  /**
+   * @hook
+   * hook pour la gestion d'erreur
+   */
+  const handleError = useErrorHandler(); // Hook de gestion d'erreurs
   // ----------------- RÉCUPÉRATION DU TOKEN ET DÉCODAGE-----------------
 
   /** @const token - On récupère le Token JWT d’authentification stocké localement */
@@ -37,7 +45,6 @@ const ProfilePage = () => {
    */
   const { user, login, logout } = useUserStore();
   const navigate = useNavigate();
-  const handleError = useErrorHandler(); // Hook de gestion d'erreurs
 
   // SYNCHRONISATION DU PROFIL LOCAL AVEC LE STORE
 
@@ -65,13 +72,16 @@ const ProfilePage = () => {
   const [pseudo, setPseudo] = useState(decoded.pseudo || "");
   const [email, setEmail] = useState(decoded.email || "");
   const [currentPassword, setCurrentPassword] = useState("");
+
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   // États pour afficher ou masquer les mots de passe
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // ------------------ VISIBILITÉ DU MOT DE PASSE ------------------
+
   /**
    * @function togglePasswordVisibility
    * Fonction pour inverser la visisbilité du Password
@@ -107,7 +117,6 @@ const ProfilePage = () => {
       // on passe SetIsPasswordVerified à true ça permet de débloquer le formulaire d'édition dans le composant.
       setIsPasswordVerified(true);
     } catch (error) {
-      console.error(error);
       handleError(error); // Gérer l'erreur avec le hook
       toast.error(error.message);
     }
@@ -129,14 +138,11 @@ const ProfilePage = () => {
       //Appel à l'api Patch
       const modifiedUser = await modifyUser(decoded.userId, pseudo, email, newPassword);
 
-      // console.log(modifiedUser.token)
-
       // Mise à jour du store avec les nouvelles données
       login(modifiedUser.token);
 
       // Message de succès
       toast.success("Profil mis à jour avec succès !");
-      
 
       //Réinitialise les champs du formulaire
       setNewPassword("");
@@ -145,7 +151,6 @@ const ProfilePage = () => {
       setIsEditing(false);
       setIsPasswordVerified(false);
     } catch (error) {
-      console.error(error);
       handleError(error); // Gérer l'erreur avec le hook
       toast.error(error.message || "Erreur lors de la mise à jour du profil.");
     }
@@ -163,7 +168,7 @@ const ProfilePage = () => {
 
     toast.confirmAction({
       title: "Suppression du compte",
-      message: "Etes vous sur de vouloir suprimer votre compte ?",
+      message: "Etes vous sur de vouloir supprimer votre compte ?",
       onConfirm: async () => {
         try {
           const removedMe = await deleteMe(user.id);
@@ -174,9 +179,8 @@ const ProfilePage = () => {
           logout();
           navigate("/");
         } catch (error) {
-          console.error(error);
           handleError(error); // Gérer l'erreur avec le hook
-          toast.error(error.message || "Erreur lors de la suppression du compte.");
+          toast.error(error || "Erreur lors de la suppression du compte.");
         }
       },
       onCancel: () => {
@@ -188,7 +192,6 @@ const ProfilePage = () => {
   // ----------------- RENDU -----------------
   return (
     <section className="section__my-profile" data-aos="fade-in">
-
       {/* Balises qui seront intégrées dans le head */}
       <title>{`${pseudo} | Ciné Délices`}</title>
       <meta name="description" content="Page de profil" />
@@ -216,6 +219,7 @@ const ProfilePage = () => {
           <form className="password-verification" onSubmit={handleVerifyPassword}>
             <label htmlFor="password-validation">Pour modifier vos informations, veuillez confirmer votre mot de passe :</label>
             <input name="password-validation" type="password" placeholder="Mot de passe actuel" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
+
             <div className="profile-actions">
               <button className="btn" type="submit">
                 Valider
@@ -242,8 +246,10 @@ const ProfilePage = () => {
             <div className="password-field">
               <label htmlFor="password">Nouveau mot de passe</label>
               <div className="control">
-                <input className="password-input" type={showPassword ? "text" : "password"} id="password" name="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required placeholder="Nouveau mot de passe" />
-                <i className={`eye-icon ${showPassword ? "uil uil-eye-slash" : "uil uil-eye"}`} onClick={togglePasswordVisibility}></i>
+                <input className="password-input" type={showPassword ? "text" : "password"} id="password" name="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="Nouveau mot de passe" />
+                <span className="eye-icon" onClick={togglePasswordVisibility}>
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
               </div>
             </div>
 
@@ -259,10 +265,11 @@ const ProfilePage = () => {
                   name="confirmPassword"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
                   placeholder="Confirmez votre mot de passe"
                 />
-                <i className={`eye-icon ${showConfirmPassword ? "uil uil-eye-slash" : "uil uil-eye"}`} onClick={toggleConfirmPasswordVisibility}></i>
+                <span className="eye-icon" onClick={toggleConfirmPasswordVisibility}>
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
               </div>
             </div>
 

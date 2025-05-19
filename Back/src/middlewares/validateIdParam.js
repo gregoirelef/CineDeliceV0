@@ -15,6 +15,7 @@ export function validateIdParam(req, res, next) {
   // Si l'identifiant n'est pas un entier positif, on déclenche une erreur 400 (mauvaise requête)
   if (!isPositiveInteger(id)) {
     const error = new Error("L'identifiant fourni n'est pas valide."); // On crée une nouvelle instance d'erreur avec un message personnalisé
+    error.statusCode = 404; // On lui attribue un code HTTP qui fera appel à errorMessages
     error.details = ["L'identifiant doit être un entier positif, sans espaces ni caractères spéciaux."]; // On lui attribue un tableau de détails
     return next(error); // On passe l'erreur au middleware de gestion des erreurs
   }

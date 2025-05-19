@@ -24,9 +24,16 @@ const AddMotionForm = () => {
    * tableau vide par défaut
    */
   const navigate = useNavigate();
-  const { handleError } = useErrorHandler(); // Hook de gestion d'erreurs
   const [motionsFormats, setMotionsFormats] = useState([]);
   const [motionsGenres, setMotionsGenres] = useState([]);
+
+  // ----------------- HOOK D'ERREUR-----------------
+  /**
+   * @hook
+   * hook pour la gestion d'erreur
+   */
+  const handleError = useErrorHandler(); // Hook de gestion d'erreurs
+
   // ----------------- RÉCUPÉRATION DES DONNÉES AU CHARGEMENT DE LA PAGE-----------------
   /**
    * @useEffect
@@ -112,7 +119,7 @@ const AddMotionForm = () => {
       navigate("/recipes/create");
       toast.success("Oeuvre ajoutée");
     } catch (error) {
-      console.error("Erreur de création :", error.message);
+      handleError(error);
       toast.error(error.message);
     }
   };
@@ -154,74 +161,27 @@ const AddMotionForm = () => {
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="form-group">
             <label htmlFor="title">Titre de l'oeuvre</label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-              placeholder="Comment s'appelle l'oeuvre dont est inspiré ta recette ?"
-            />
+            <input type="text" id="title" name="title" value={title} onChange={(e) => setTitle(e.target.value)} required placeholder="Comment s'appelle l'oeuvre dont est inspiré ta recette ?" />
           </div>
           <div className="form-group">
             <label htmlFor="release_date">Date de sortie</label>
-            <input
-              type="text"
-              id="release_date"
-              name="release_date"
-              value={releaseDate}
-              onChange={(e) => setReleaseDate(e.target.value)}
-              required
-              placeholder="JJ/MM/AAAA"
-            />
+            <input type="text" id="release_date" name="release_date" value={releaseDate} onChange={(e) => setReleaseDate(e.target.value)} required placeholder="JJ/MM/AAAA" />
           </div>
           <div className="form-group">
             <label htmlFor="director">Réalisateur</label>
-            <input
-              type="text"
-              id="director"
-              name="director"
-              value={director}
-              onChange={(e) => setDirector(e.target.value)}
-              required
-              placeholder="Quel est le réalisateur de l'oeuvre !"
-            />
+            <input type="text" id="director" name="director" value={director} onChange={(e) => setDirector(e.target.value)} required placeholder="Quel est le réalisateur de l'oeuvre !" />
           </div>
           <div className="form-group">
             <label htmlFor="description">Description</label>
-            <textarea
-              id="description"
-              name="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-              placeholder="Décris nous l'oeuvre en quelques mots"
-              rows="4"
-            />
+            <textarea id="description" name="description" value={description} onChange={(e) => setDescription(e.target.value)} required placeholder="Décris nous l'oeuvre en quelques mots" rows="4" />
           </div>
           <div className="form-group">
             <label htmlFor="catchphrase">Citation</label>
-            <input
-              type="text"
-              id="catchphrase"
-              name="catchphrase"
-              value={catchphrase}
-              onChange={(e) => setCatchphrase(e.target.value)}
-              required
-              placeholder="Sors nous ta plus belle tirade de l'oeuvre !"
-            />
+            <input type="text" id="catchphrase" name="catchphrase" value={catchphrase} onChange={(e) => setCatchphrase(e.target.value)} required placeholder="Sors nous ta plus belle tirade de l'oeuvre !" />
           </div>
           <div className="form-group">
             <label htmlFor="format_id">Support</label>
-            <select
-              aria-label="choisi le format de loeuvre"
-              id="format_id"
-              name="format_id"
-              value={formatId}
-              onChange={(e) => setFormatsId(e.target.value)}
-              required
-            >
+            <select aria-label="choisi le format de loeuvre" id="format_id" name="format_id" value={formatId} onChange={(e) => setFormatsId(e.target.value)} required>
               <option value="">Choisis le type auquel est liée l'oeuvre</option>
               {/*Map pour afficher le menu déroulant */}
               {motionsFormats.map((format) => (
@@ -234,14 +194,7 @@ const AddMotionForm = () => {
           {genresList.map((selectedGenre, index) => (
             <div key={index} className="form-group">
               <label htmlFor={`genre_id_${index}`}>Genre {index + 1}</label>
-              <select
-                aria-label="choisi le genre de loeuvre"
-                id={`genre_id_${index}`}
-                name={`genre_id_${index}`}
-                value={selectedGenre.motion_genre_id}
-                onChange={(e) => handleGenreChange(index, e.target.value)}
-                required
-              >
+              <select aria-label="choisi le genre de loeuvre" id={`genre_id_${index}`} name={`genre_id_${index}`} value={selectedGenre.motion_genre_id} onChange={(e) => handleGenreChange(index, e.target.value)} required>
                 <option value="">Choisis le genre</option>
                 {motionsGenres.map((genre) => (
                   <option key={genre.id} value={genre.id}>

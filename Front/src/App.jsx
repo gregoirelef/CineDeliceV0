@@ -32,15 +32,18 @@ import LegalMention from "./pages/LegalMention/legalMention.jsx";
 import IsAdmin from "./IsAuthed/IsAdmin.jsx";
 import ResetPassword from "./pages/Authentification/ResetPassword/ResetPassword.jsx";
 import AdminPage from "./pages/AdminPage/adminPage.jsx";
+import MotionsList from "./pages/MotionsList/MotionsList.jsx";
+import ScrollToTop from "./component/ScrollToTop.jsx";
 
 function App() {
-  const { handleError } = useErrorHandler(); // Hook de gestion d'erreurs
+  const handleError = useErrorHandler(); // Hook de gestion d'erreurs
 
   const [recipes, setRecipes] = useState([]);
 
   const login = useUserStore((state) => state.login);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     //on charge toutes les recipes au chargement de la page
     const loadRecipes = async () => {
       try {
@@ -52,8 +55,10 @@ function App() {
     };
 
     loadRecipes();
+
     //Au chargement de la page, toujours, on va chercher dans le local storage si un token est présent
     const token = getAuthToken();
+
     // console.log(token);
     AOS.init({ duration: 1000, once: false });
     //si il trouve bien un token, alors il le décode, pour avoir accès à ses propriétés définies en back
@@ -71,9 +76,9 @@ function App() {
 
   return (
     <>
-      <Header />
-
       <main>
+        <ScrollToTop />
+
         <Routes>
           {/* Routes accessibles à tous */}
           <Route path="/" element={<Home recipes={recipes} />} />
@@ -81,6 +86,7 @@ function App() {
           <Route path="/carnet" element={<Carnet recipes={recipes} />} />
           <Route path="/recipes/:id" element={<Recipe />} />
           <Route path="/recipes" element={<RecipesList recipes={recipes} />} />
+          <Route path="/motions" element={<MotionsList />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
@@ -103,7 +109,6 @@ function App() {
           {/* on met ici notre page 404 personnalisé comme élément */}
         </Routes>
       </main>
-      <Footer />
     </>
   );
 }

@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import toast from "../../../../utils/toast.js";
 import { deleteOneMotion } from "../../../../api/adminApi.js";
+import { useErrorHandler } from "../../../../api/apiErrorHandler.js";
 
 const DeleteMotion = ({ motionsList, setMotionsList }) => {
+  // ----------------- HOOK D'ERREUR-----------------
+  /**
+   * @hook
+   * hook pour la gestion d'erreur
+   */
+  const handleError = useErrorHandler(); // Hook de gestion d'erreurs
   const [motionId, setMotionId] = useState("");
 
   // ----------------- Formulaire de suppression d'oeuvre ----------------
@@ -36,6 +43,7 @@ const DeleteMotion = ({ motionsList, setMotionsList }) => {
           // Affiche un message de succès
           toast.success("Œuvre supprimée avec succès !");
         } catch (error) {
+          handleError(error);
           // Gestion des erreurs côté client
           if (error.message) {
             try {

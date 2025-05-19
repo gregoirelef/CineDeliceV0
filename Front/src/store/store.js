@@ -39,7 +39,6 @@ export const useUserStore = create((set) => ({
           token: jwtToken,
         },
       }));
-      // console.log("User connected:", decoded.pseudo);
     } catch (error) {
       console.error("Échec du décodage du token :", error);
     }

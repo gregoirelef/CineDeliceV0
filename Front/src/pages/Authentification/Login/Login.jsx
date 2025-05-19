@@ -21,6 +21,12 @@ import ResetPasswordModal from "./components/ForgotPasswordModal.jsx";
   /* ---------------------------------------------------------------------------------------------- */
 
 const Login = () => {
+  // ----------------- HOOK D'ERREUR-----------------
+  /**
+   * @hook
+   * hook pour la gestion d'erreur
+   */
+  const handleError = useErrorHandler(); // Hook de gestion d'erreurs
   // ----------------- ÉTATS DU FORMULAIRE, STORE UTILISATEUR ET NAVIGATE -----------------
 
   /**
@@ -55,8 +61,6 @@ const Login = () => {
 
   /**  Hook de React Router pour rediriger l'utilisateur vers une autre page*/
   const navigate = useNavigate();
-
-  const handleError = useErrorHandler(); // Hook de gestion d'erreurs
 
   // ------------------ VISIBILITÉ DU MOT DE PASSE ------------------
   /**
@@ -102,10 +106,14 @@ const Login = () => {
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
-    toast.success("Si cet adresse existe, un e-mail vous a été envoyé.");
-    setShowResetForm(false);
-    await forgotPassword(resetEmail);
 
+    setShowResetForm(false);
+    try {
+      toast.success("Si cet adresse existe, un e-mail vous a été envoyé.");
+      await forgotPassword(resetEmail);
+    } catch (error) {
+      handleError(error);
+    }
     setEmail("");
   };
 
@@ -133,7 +141,7 @@ const Login = () => {
               Mot de passe :
             </label>
             <div className="control">
-              <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Entrez votre mot de passe" />
+              <input type={showPassword ? "text" : "password"} id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Entrez votre mot de passe" />
               <span className="eye-icon" onClick={togglePasswordVisibility}>
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>

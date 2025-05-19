@@ -250,7 +250,6 @@ const userController = {
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Protéger contre les attaques CSRF (cross-site request forgery)
       maxAge: 0, // à 0 pour supprimer le cookie immédiatement
     });
-    // console.log("Je suis dans la route Back");
 
     res.json({ message: "Déconnexion réussie." }); // On renvoie un message de succès
   },
@@ -393,10 +392,9 @@ const userController = {
    * @function getAllUsers
    * @param {import('express').Request} req - Requête Express
    * @param {import('express').Response} res - Réponse Express
-   * @param {Function} next - Fonction middleware suivante
    * @returns {Promise<void>}
    */
-  async getAllUsers(req, res, next) {
+  async getAllUsers(req, res) {
     // ADMIN ONLY
     const users = await User.findAll({
       attributes: { exclude: ["password"] }, // On exclut le champ "password"

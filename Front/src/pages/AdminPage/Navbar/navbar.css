@@ -43,6 +43,7 @@
   margin: 5rem 0.5rem;
   color: white;
   display: block;
+  cursor: pointer;
 }
 
 .sidenav-link:hover,

@@ -23,6 +23,7 @@
   background-color: var(--blue-dark);
   border: 5px solid var(--orange);
   color: white;
+  margin: auto;
 }
 
 .section__presentation-title {

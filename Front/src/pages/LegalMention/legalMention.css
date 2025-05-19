@@ -1,6 +1,16 @@
+.section_legal_mention {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+}
+
 .box_legal_mention {
   padding: 1.5em;
   width: 80%;
+  line-height: 4rem;
+  margin: auto;
 }
 
 .box_legal_mention:hover {

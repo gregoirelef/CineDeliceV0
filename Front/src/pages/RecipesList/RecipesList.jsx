@@ -27,8 +27,7 @@ const RecipesList = ({ recipes }) => {
 
   return (
     <section className="section__recipe-all">
-
-       {/* Balises qui seront intégrées dans le head */}
+      {/* Balises qui seront intégrées dans le head */}
       <title>Liste des recettes | Ciné Délices</title>
       <meta name="description" content="liste de recettes inspirées du cinéma" />
       <meta name="keywords" content="Ciné délices, recettes, cinéma, cuisine, films, liste" />
@@ -42,8 +41,8 @@ const RecipesList = ({ recipes }) => {
           </div>
         );
       })}
-      <button className="button-return-catalog btn" onClick={() => navigate("/carnet")}>
-        Retourner au carnet
+      <button className="button-return-catalog btn" onClick={() => navigate(-1)}>
+        Retourner à la page précédente
       </button>
     </section>
   );

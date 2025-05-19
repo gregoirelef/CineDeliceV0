@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 //Toast
 import toast from "../../../../utils/toast.js";
+import { useErrorHandler } from "../../../../api/apiErrorHandler.js";
 //Variable d'environnement
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -17,6 +18,13 @@ const API_URL = import.meta.env.VITE_API_URL;
  **/
 
 const ModifyMotionForm = ({ motionsList }) => {
+  // ----------------- HOOK D'ERREUR-----------------
+  /**
+   * @hook
+   * hook pour la gestion d'erreur
+   */
+  const handleError = useErrorHandler(); // Hook de gestion d'erreurs
+
   const navigate = useNavigate(); // ← Initialisation du hook
 
   //useState des appels api
@@ -57,7 +65,7 @@ const ModifyMotionForm = ({ motionsList }) => {
           })) || []
         );
       } catch (error) {
-        console.error("Erreur lors de la récupération du film :", error.message);
+        handleError(error);
       }
     };
     loadMotionsFormats();
@@ -100,13 +108,12 @@ const ModifyMotionForm = ({ motionsList }) => {
       formData.append("picture", image);
     }
 
-
     try {
       await modifyOneMotion(motionId, formData);
       navigate(`/user/admin`);
       toast.success("L'oeuvre a bien été modifiée");
     } catch (error) {
-      console.error("Erreur de modification:", error.message);
+      handleError(error);
       toast.error(error.message);
     }
   };

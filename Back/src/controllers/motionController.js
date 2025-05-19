@@ -14,10 +14,9 @@ const motionController = {
    * @function getAllMotions
    * @param {import('express').Request} req - Requête Express
    * @param {import('express').Response} res - Réponse Express
-   * @param {Function} next - Fonction middleware suivante
    * @returns {Promise<void>}
    */
-  async getAllMotions(req, res, next) {
+  async getAllMotions(req, res) {
     const motions = await Motion.findAll({ include: ["recipes", "genres"] });
     res.status(200).json(motions); // Si films trouvés, on les renvoie au format JSON avec un statut 200
   },
@@ -27,10 +26,9 @@ const motionController = {
    * @function getAllMotionsFormats
    * @param {import('express').Request} req - Requête Express
    * @param {import('express').Response} res - Réponse Express
-   * @param {Function} next - Fonction middleware suivante
    * @returns {Promise<void>}
    */
-  async getAllMotionsFormats(req, res, next) {
+  async getAllMotionsFormats(req, res) {
     const motionsFormats = await MotionFormat.findAll();
     res.status(200).json(motionsFormats); // Si formats trouvés, on les renvoie au format JSON avec un statut 200
   },
@@ -40,10 +38,9 @@ const motionController = {
    * @function getAllMotionsGenres
    * @param {import('express').Request} req - Requête Express
    * @param {import('express').Response} res - Réponse Express
-   * @param {Function} next - Fonction middleware suivante
    * @returns {Promise<void>}
    */
-  async getAllMotionsGenres(req, res, next) {
+  async getAllMotionsGenres(req, res) {
     const motionsGenres = await MotionGenre.findAll();
     res.status(200).json(motionsGenres); // Si genres trouvés, on les renvoie au format JSON avec un statut 200
   },
@@ -91,7 +88,6 @@ const motionController = {
     parsedGenres = req.body.motion_genres;
     //on extrait l'ID de chaque Genre dans une variable
     const genreIDs = parsedGenres.map((genre) => genre.motion_genre_id);
-    console.log(req.body);
     // on crée le film en BDD avec tous les champs voulus
     const motion = await Motion.create(
       {
@@ -152,8 +148,16 @@ const motionController = {
     await motion.destroy();
     res.status(200).json({ message: "oeuvre et recette associées supprimées avec succès" }); // On renvoie un message de succès
   },
-
-  async modifyOneMotion(req, res) {
+  /**
+   * Modify une œuvre (film/série) avec gestion de l'image et des genres associés.
+   * @async
+   * @function deleteOneMotion
+   * @param {import('express').Request} req - Requête Express
+   * @param {import('express').Response} res - Réponse Express
+   * @param {Function} next - Fonction middleware suivante
+   * @returns {Promise<void>}
+   */
+  async modifyOneMotion(req, res, next) {
     // on démarre une transaction avec Sequelize ( comme un script SQL avec BEGIN et COMMIT, pour s'assurer que toutes les opérations en BDD soient effectuées ou noê)
     // ici on utilise une transaction pour etre sûr que l'on modifie bien un film avec un Genre associé (la réalisation d'une transaction sequelize est rendue "obligatoire"/essentielle)
     // de par la définition de nos models de données et de leur relations. Les script SQL font mention de valeur NOTNULL dans certains champs de nos tables, ainsi un film ne peut pas être crée sans genres. Néanmoins, dans cette requête, nous devons procéder à plusieurs
@@ -198,7 +202,6 @@ const motionController = {
     let parsedGenres = req.body.motion_genres || [];
     //on extrait l'ID de chaque Genre dans une variable
     const genreIDs = parsedGenres.map((genre) => genre.motion_genre_id);
-    // console.log(req.body);
 
     try {
       // on met a jour les propriétés de l'instance
@@ -231,6 +234,16 @@ const motionController = {
     }
   },
 
+  /**
+   * Récupère une œuvre (film ou série) spécifique à partir de son ID,
+   * incluant les genres associés.
+   * @async
+   * @function deleteOneMotion
+   * @param {import('express').Request} req - Requête Express
+   * @param {import('express').Response} res - Réponse Express
+   * @param {Function} next - Fonction middleware suivante
+   * @returns {Promise<void>}
+   */
   async getOneMotion(req, res, next) {
     // Récupération de l'ID depuis les paramètres de la route
     const id = req.params.id;

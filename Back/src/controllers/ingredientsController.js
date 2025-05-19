@@ -7,10 +7,9 @@ const ingredientsController = {
    * @function getAllIngredients
    * @param {import('express').Request} req - Requête Express
    * @param {import('express').Response} res - Réponse Express
-   * @param {Function} next - Fonction middleware suivante
    * @returns {Promise<void>}
    */
-  async getAllIngredients(req, res, next) {
+  async getAllIngredients(req, res) {
     const ingredients = await Ingredient.findAll({
       order: [["name", "ASC"]],
     });
@@ -62,7 +61,6 @@ const ingredientsController = {
       error.details = ["Erreur lors de la création de l'ingrédient"]; // On lui attribue un tableau de détails
       return next(error); // On la passe au middleware d'erreur
     }
-    console.log(newIngredient);
     res.status(201).json(newIngredient); // On renvoie l'ingrédient créé avec un statut 201
   },
 
@@ -98,9 +96,7 @@ const ingredientsController = {
       error.statusCode = 400; // On lui attribue un code HTTP qui fera appel à errorMessages
       error.details = [
         // On lui attribue un tableau de détails
-        `L'ingrédient est utilisé dans ${associatedRecipes.length} recette(s) et ne peut pas être supprimé : ${associatedRecipes
-          .map((recipe) => recipe.title)
-          .join(", ")}`,
+        `L'ingrédient est utilisé dans ${associatedRecipes.length} recette(s) et ne peut pas être supprimé : ${associatedRecipes.map((recipe) => recipe.title).join(", ")}`,
       ];
       return next(error); // On la passe au middleware d'erreur
     }

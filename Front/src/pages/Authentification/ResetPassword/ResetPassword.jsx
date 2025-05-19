@@ -2,9 +2,16 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "../../../utils/toast.js";
 import { resetPassword } from "../../../api/userApi.js";
+import { useErrorHandler } from "../../../api/apiErrorHandler.js";
 // import { resetPassword } from '../../api/index'; // À décommenter quand tu as une vraie API
 
 const ResetPassword = () => {
+  // ----------------- HOOK D'ERREUR-----------------
+  /**
+   * @hook
+   * hook pour la gestion d'erreur
+   */
+  const handleError = useErrorHandler(); // Hook de gestion d'erreurs
   /**State pour les données du formulaire */
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -47,7 +54,8 @@ const ResetPassword = () => {
       toast.success("Mot de passe réinitialisé avec succès ! Veuillez vous authentifier");
 
       navigate("/login");
-    } catch {
+    } catch (error) {
+      handleError(error);
       toast.error("Erreur lors de la réinitialisation du mot de passe.");
     }
   };

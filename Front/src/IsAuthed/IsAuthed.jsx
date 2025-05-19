@@ -4,6 +4,7 @@ import toast from "../utils/toast.js"; // Importation du toast pour les messages
 import { getAuthToken } from "../store/authToken.js"; // Récupération du token depuis le localStorage
 import jwt_decode from "jwt-decode"; // Décodage du token JWT
 import { refreshAccessToken } from "../api/userApi.js"; // Appel API pour rafraîchir le token
+import { useErrorHandler } from "../api/apiErrorHandler.js";
 
 /** ----------------------------------------------------------------------------------------------
  * Composant de protection d'accès basé sur l'authentification.
@@ -13,6 +14,12 @@ import { refreshAccessToken } from "../api/userApi.js"; // Appel API pour rafra�
  * ---------------------------------------------------------------------------------------------- */
 
 const IsAuthed = () => {
+  // ----------------- HOOK D'ERREUR-----------------
+  /**
+   * @hook
+   * hook pour la gestion d'erreur
+   */
+  const handleError = useErrorHandler(); // Hook de gestion d'erreurs
   // Indique si la vérification de l'utilisateur est terminée
   const [validated, setValidated] = useState(false);
 
@@ -61,7 +68,8 @@ const IsAuthed = () => {
             token = getAuthToken(); // Récupération du nouveau token du localStorage
           } catch (error) {
             // Échec du refresh (ex : refresh token expiré ou absent)
-            console.error("Échec du rafraîchissement du token :", error);
+            handleError(error);
+
             toast.error("Session expirée, veuillez vous reconnecter.");
             setValidated(true); // Fin de la vérification
             return;
@@ -75,7 +83,7 @@ const IsAuthed = () => {
         }
       } catch (error) {
         // Erreur si le token est mal formé ou le décodage échoue
-        console.error("Erreur de décodage ou de token :", error);
+        handleError(error);
       }
 
       setValidated(true); //Fin de la vérification quelle qu'elle soit

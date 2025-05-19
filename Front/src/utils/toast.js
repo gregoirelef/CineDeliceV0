@@ -19,11 +19,11 @@ const toast = {
       transitionOut: "flipOutX",
       // Callback d'ouverture de la notification
       onOpening: function () {
-        console.log("callback opened ! ");
+      
       },
       // Callback de fermeture de la notification
       onClosing: function () {
-        console.log("callback closed !");
+        
       },
     });
   },

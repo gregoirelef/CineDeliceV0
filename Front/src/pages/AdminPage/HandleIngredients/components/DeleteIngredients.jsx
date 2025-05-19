@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import toast from "../../../../utils/toast.js";
 import { deleteOneIngredient } from "../../../../api/adminApi.js";
+import { useErrorHandler } from "../../../../api/apiErrorHandler.js";
 
 const DeleteIngredients = ({ ingredientList, setIngredientList }) => {
+  // ----------------- HOOK D'ERREUR-----------------
+  /**
+   * @hook
+   * hook pour la gestion d'erreur
+   */
+  const handleError = useErrorHandler();
   const [ingredientId, setIngredientId] = useState("");
   // ----------------- Formulaire de suppression d'ingrédients-----------------
 
   const handleDeleteIngredient = (e) => {
+    // Hook de gestion d'erreurs
     e.preventDefault();
 
     // Vérifie si l'utilisateur a sélectionné un ingrédient
@@ -37,16 +45,14 @@ const DeleteIngredients = ({ ingredientList, setIngredientList }) => {
           // Affiche un message de succès
           toast.success("Ingrédient supprimé avec succès !");
         } catch (error) {
+          handleError(error);
           // Gestion des erreurs
-          if (error.message) {
-            try {
-              const errorDetails = JSON.parse(error.message); // JSON si Joi par exemple
-              errorDetails.forEach((msg) => toast.error(msg));
-            } catch (error) {
-              toast.error("Une erreur est survenue : " + error.message);
-            }
+          // Gestion des erreurs avec affichage toast
+          if (error.details && Array.isArray(error.details)) {
+            // Si tu as un tableau de messages dans error.details, affiche-les tous
+            error.details.forEach((msg) => toast.error(msg));
           } else {
-            toast.error(error.message || "Une erreur est survenue");
+            toast.error("Une erreur est survenue");
           }
         }
       },

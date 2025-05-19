@@ -20,7 +20,7 @@
   --fs-container-title: 2rem;
   --fs-subtitle: 1.5rem;
   --fs-submit-title: 1.4rem;
-  --fs-normal-size: 1.2rem;
+  --fs-normal-size: 1.1rem;
   --fs-small-size: 1rem;
   --fs-smaller-size: 0.8rem;
 }
@@ -251,7 +251,6 @@ textarea {
 
 /*------Pages erreurs------*/
 .error-page {
-  height: 100vh;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -303,10 +302,10 @@ textarea {
 /* -------------------- */
 @media (min-width: 1000px) {
   :root {
-    --fs-section-title: 3.5rem;
+    --fs-section-title: 3rem;
     --fs-container-title: 2.5rem;
-    --fs-subtitle: 2rem;
-    --fs-normal-size: 1.5rem;
+    --fs-subtitle: 1.5rem;
+    --fs-normal-size: 1.2rem;
     --fs-small-size: 1.2rem;
     --fs-smaller-size: 0.9rem;
   }

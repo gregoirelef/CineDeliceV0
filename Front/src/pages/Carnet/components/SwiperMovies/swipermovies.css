@@ -10,6 +10,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .film__card img {
@@ -30,6 +31,10 @@
 }
 .swiper-slide {
   width: auto !important;
+}
+
+.btn-see-more-motions {
+  margin-top: 0;
 }
 
 @media (min-width: 768px) {

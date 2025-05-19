@@ -17,6 +17,12 @@ import { useErrorHandler } from "../../api/apiErrorHandler.js";
  /* ---------------------------------------------------------------------------------------------- */
 
 const AddRecipeForm = ({ setRecipes }) => {
+  // ----------------- HOOK D'ERREUR-----------------
+  /**
+   * @hook
+   * hook pour la gestion d'erreur
+   */
+  const handleError = useErrorHandler(); // Hook de gestion d'erreurs
   // ----------------- STATE DES DONNÉES DE LA BDD-----------------
   /**
    * @state
@@ -35,7 +41,6 @@ const AddRecipeForm = ({ setRecipes }) => {
    * Contient les informations de l'utilisateur connecté (pseudo, email, userId, etc.)
    */
 
-  const { handleError } = useErrorHandler(); // Hook de gestion d'erreurs
   const { user } = useUserStore();
   const navigate = useNavigate(); // ← Initialisation du hook
 
@@ -197,7 +202,7 @@ const AddRecipeForm = ({ setRecipes }) => {
       navigate(`/recipes/${fullRecipe.id}`);
       toast.success("La recette a bien été crée");
     } catch (error) {
-      console.error("Erreur de création:", error.message);
+      handleError(error);
       toast.error(error.message);
     }
   };
@@ -216,15 +221,7 @@ const AddRecipeForm = ({ setRecipes }) => {
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="form-group">
             <label htmlFor="title">Titre de la recette</label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-              placeholder="Comment s'appelle ta super recette ?"
-            />
+            <input type="text" id="title" name="title" value={title} onChange={(e) => setTitle(e.target.value)} required placeholder="Comment s'appelle ta super recette ?" />
           </div>
 
           <div className="form-group">
@@ -246,53 +243,22 @@ const AddRecipeForm = ({ setRecipes }) => {
 
           <div className="form-group">
             <label htmlFor="description">Description</label>
-            <textarea
-              id="description"
-              name="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-              placeholder="Décris nous ta recette en quelques mots"
-              rows="4"
-            />
+            <textarea id="description" name="description" value={description} onChange={(e) => setDescription(e.target.value)} required placeholder="Décris nous ta recette en quelques mots" rows="4" />
           </div>
 
           <div className="form-group">
             <label htmlFor="instruction">Instructions</label>
-            <textarea
-              id="instruction"
-              name="instruction"
-              value={instruction}
-              onChange={(e) => setInstruction(e.target.value)}
-              required
-              placeholder="Ici, tu peux écrire toutes les étapes à suivre pour le bon déroulement de ta recette"
-              rows="6"
-            />
+            <textarea id="instruction" name="instruction" value={instruction} onChange={(e) => setInstruction(e.target.value)} required placeholder="Ici, tu peux écrire toutes les étapes à suivre pour le bon déroulement de ta recette" rows="6" />
           </div>
 
           <div className="form-group">
             <label htmlFor="anecdote">Anecdote</label>
-            <textarea
-              id="anecdote"
-              name="anecdote"
-              value={anecdote}
-              onChange={(e) => setAnecdote(e.target.value)}
-              placeholder="Raconte nous une anecdote en rapport avec l'oeuvre ou ta recette, ou les deux "
-              rows="4"
-            />
+            <textarea id="anecdote" name="anecdote" value={anecdote} onChange={(e) => setAnecdote(e.target.value)} placeholder="Raconte nous une anecdote en rapport avec l'oeuvre ou ta recette, ou les deux " rows="4" />
           </div>
 
           <div className="form-group">
             <label htmlFor="completion_time">Temps de préparation (en minutes)</label>
-            <input
-              type="number"
-              id="completion_time"
-              name="completion_time"
-              value={completionTime}
-              onChange={(e) => setCompletionTime(e.target.value)}
-              required
-              placeholder="Exemple: 30"
-            />
+            <input type="number" id="completion_time" name="completion_time" value={completionTime} onChange={(e) => setCompletionTime(e.target.value)} required placeholder="Exemple: 30" />
           </div>
           {/*==========Input pour envoyer l'id de l'utilisateur============
           Invisible pour l'utilisateur*/}

@@ -34,10 +34,13 @@
 .text_recipe {
   font-size: var(--fs-normal-size);
 }
+
 .card {
   padding: 1.5rem;
   font-weight: 700;
   background-color: var(--beige-transparent);
+  border-top: 8px solid var(--red-dark) !important;
+  border-radius: 15px;
 }
 
 .card_title {

@@ -29,7 +29,6 @@ export async function compare(plainTextPassword, hashedPassword) {
  * @returns {string} Le token JWT signé.
  */
 export function generateJwtToken(payload) {
-  // console.log(payload);
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "15m" });
 } // générer une clé secrète en .env par la suite
 

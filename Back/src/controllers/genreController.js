@@ -7,10 +7,9 @@ const genreController = {
    * @function getAllGenres
    * @param {import('express').Request} req - Requête Express
    * @param {import('express').Response} res - Réponse Express
-   * @param {Function} next - Fonction middleware suivante
    * @returns {Promise<void>}
    */
-  async getAllGenres(req, res, next) {
+  async getAllGenres(req, res) {
     const genres = await MotionGenre.findAll({
       order: [["name", "ASC"]],
     });

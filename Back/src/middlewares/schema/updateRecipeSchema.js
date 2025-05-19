@@ -120,4 +120,7 @@ export const updateRecipeSchema = Joi.object({
       "array.base": "ingredient doit être un tableau.", // Vérifie que la valeur est un tableau
       "array.min": "Doit contenir au moins un élément.", // Vérifie que le tableau contient au moins un élément
     }),
+  picture: Joi.any().required().messages({
+    "any.required": "Veuillez proposer une image pour la recette.",
+  }),
 });

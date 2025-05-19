@@ -82,7 +82,6 @@ const Register = () => {
 
       //rediriger vers l'accueil
     } catch (error) {
-      console.error("Erreur d'inscription:", error.message);
       handleError(error); // Gérer l'erreur avec le hook
       toast.error(error.message);
     }
@@ -92,7 +91,6 @@ const Register = () => {
 
   return (
     <section className="section">
-
       {/* Balises qui seront intégrées dans le head */}
       <title>S'inscrire | Ciné Délices</title>
       <meta name="description" content="Page d'inscription" />

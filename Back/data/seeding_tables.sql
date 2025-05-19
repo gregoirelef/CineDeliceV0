@@ -49,7 +49,7 @@ INSERT INTO "motion" (
 (2, 'Pulp Fiction', '/uploads/movies/2.webp', '14/10/1994', 'Quentin Tarantino', 'It’s the little differences.', 'Un film culte entre histoires entrecroisées de violence, humour noir et rédemption.',1),
 (3, 'La Belle et le Clochard', '/uploads/movies/3.webp', '22/06/1955', 'Clyde Geronimi', 'Un amour digne d''un conte de fées.', 'L''histoire d''un chien de salon et d''un chien de ruelle qui vivent une romance inoubliable.', 5),
 (4, 'Ratatouille', '/uploads/movies/4.webp', '29/06/2007', 'Brad Bird', 'Anyone can cook!', 'Un rat rêve de devenir chef dans un restaurant parisien et affronte de nombreux défis.', 5),
-(5, 'Le Voyage de Chihiro', '/uploads/movies/5.webp', '20/07/2001', 'Hayao Miyazaki', 'Là où <les rêves et les fantômes se rencontrent.', 'Une jeune fille se retrouve piégée dans un monde spirituel et doit sauver ses parents.', 5),
+(5, 'Le Voyage de Chihiro', '/uploads/movies/5.webp', '20/07/2001', 'Hayao Miyazaki', 'Là où les rêves et les fantômes se rencontrent.', 'Une jeune fille se retrouve piégée dans un monde spirituel et doit sauver ses parents.', 5),
 (6, 'Le Père Noël est une ordure', '/uploads/movies/6.webp', '20/12/1982', 'Jean-Marie Poiré', 'C’est pas Noël tous les jours !', 'Un groupe de bénévoles d’une association accueille un Père Noël un peu particulier.', 1),
 (7, 'Le Château Ambulant', '/uploads/movies/7.webp', '20/11/2004', 'Hayao Miyazaki', 'La magie et l''amour sont des armes puissantes.', 'Une jeune fille est transformée en vieille dame et cherche à briser la malédiction avec l’aide d’un château ambulant magique.',5);
 

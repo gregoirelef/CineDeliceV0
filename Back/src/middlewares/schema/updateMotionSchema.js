@@ -94,5 +94,7 @@ export const updateMotionSchema = Joi.object({
   // Joi.any() : vérifie que la valeur est de n'importe quel type
   // .optionnal() : propriété optionnelle
 
-  picture: Joi.any().optional(),
+  picture: Joi.any().required().messages({
+    "any.required": "Veuillez proposer une image pour l'oeuvre", // Vérifie que la propriété est obligatoire
+  }),
 });

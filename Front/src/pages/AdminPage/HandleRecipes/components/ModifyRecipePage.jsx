@@ -11,10 +11,16 @@ import { getAllIngredients } from "../../../../api/ingredientsApi.js";
 
 // Import de la fonction de notification (toast)
 import toast from "../../../../utils/toast.js";
+import { useErrorHandler } from "../../../../api/apiErrorHandler.js";
 // Import de la variable d'environnement
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ModifyRecipeForm = ({ recipes, setRecipes, motionsList }) => {
+  /**
+   * @hook
+   * hook pour la gestion d'erreur
+   */
+  const handleError = useErrorHandler(); // Hook de gestion d'erreurs
   // Composant de formulaire de modification de recette
 
   // ----------------- STATE DES DONNÉES DE LA BDD-----------------
@@ -48,21 +54,34 @@ const ModifyRecipeForm = ({ recipes, setRecipes, motionsList }) => {
 
   useEffect(() => {
     // Chargement de la liste des ingrédients depuis l'API
+
     const loadIngredients = async () => {
-      const ingredientsData = await getAllIngredients();
-      setIngredients(ingredientsData);
+      try {
+        const ingredientsData = await getAllIngredients();
+        setIngredients(ingredientsData);
+      } catch (error) {
+        handleError(error);
+      }
     };
 
     // Chargement des catégories de plats depuis l'API
     const loadCategory = async () => {
-      const categoryData = await getDishesCategories();
-      setdishCategory(categoryData);
+      try {
+        const categoryData = await getDishesCategories();
+        setdishCategory(categoryData);
+      } catch (error) {
+        handleError(error);
+      }
     };
 
     // Chargement des niveaux de difficulté depuis l'API
     const loadDifficulty = async () => {
-      const difficultyData = await getDishesDifficulty();
-      setdishDifficulty(difficultyData);
+      try {
+        const difficultyData = await getDishesDifficulty();
+        setdishDifficulty(difficultyData);
+      } catch (error) {
+        handleError(error);
+      }
     };
 
     // Chargement d'une recette existante par son ID (pour préremplir le formulaire)
@@ -91,7 +110,7 @@ const ModifyRecipeForm = ({ recipes, setRecipes, motionsList }) => {
         );
         setImg(recipeData.picture);
       } catch (error) {
-        console.error("Erreur lors de la récupération de la recette :", error.message);
+        handleError(error);
       }
     };
 
@@ -143,7 +162,7 @@ const ModifyRecipeForm = ({ recipes, setRecipes, motionsList }) => {
       navigate(`/recipes/${recipeId}`);
       toast.success("La recette a bien été modifié");
     } catch (error) {
-      console.error("Erreur de modification:", error.message);
+      handleError(error);
       toast.error(error.message);
     }
   };

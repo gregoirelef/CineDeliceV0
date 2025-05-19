@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import toast from "../../../../utils/toast.js";
 import { deleteOneRecipe } from "../../../../api/adminApi.js";
+import { useErrorHandler } from "../../../../api/apiErrorHandler.js";
 
 const DeleteRecipe = ({ recipes, setRecipes }) => {
+  /**
+   * @hook
+   * hook pour la gestion d'erreur
+   */
+  const handleError = useErrorHandler(); // Hook de gestion d'erreurs
   const [recipeId, setRecipeId] = useState("");
   // ----------------- Formulaire de suppression de recette ----------------
   //fonction qui gère l'envoi du formulaire de suppression de recette
@@ -39,6 +45,8 @@ const DeleteRecipe = ({ recipes, setRecipes }) => {
           // Affiche un message de succèsp
           toast.success("Recette supprimée avec succès !");
         } catch (error) {
+          handleError(error);
+
           // Gestion des erreurs côté client
           if (error.message) {
             try {
@@ -50,7 +58,7 @@ const DeleteRecipe = ({ recipes, setRecipes }) => {
               });
             } catch {
               // Si l'erreur ne peut pas être parsée, affiche un message générique
-              toast.error("Une erreur est survenue : " + error.message);
+              toast.error("Une erreur est survenue");
             }
           } else {
             // Si l'erreur est inconnue, affiche un message par défaut
@@ -61,7 +69,7 @@ const DeleteRecipe = ({ recipes, setRecipes }) => {
 
       // Fonction appelée si l'utilisateur annule la suppression
       onCancel: () => {
-       toast.info("Suppression annulée");
+        toast.info("Suppression annulée");
       },
     });
   };

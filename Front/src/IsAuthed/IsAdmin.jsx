@@ -4,8 +4,15 @@ import toast from "../utils/toast.js";
 import { getAuthToken } from "../store/authToken.js";
 import jwt_decode from "jwt-decode";
 import { refreshAccessToken } from "../api/userApi.js";
+import { useErrorHandler } from "../api/apiErrorHandler.js";
 
 const IsAdmin = () => {
+  // ----------------- HOOK D'ERREUR-----------------
+  /**
+   * @hook
+   * hook pour la gestion d'erreur
+   */
+  const handleError = useErrorHandler(); // Hook de gestion d'erreurs
   //State qui attend la validation pour afficher la page
   const [validated, setValidated] = useState(false);
   //State qui attend la validation du rôle de l'utilisateur
@@ -21,12 +28,18 @@ const IsAdmin = () => {
   useEffect(() => {
     // Fonction qui vérifie que l'utilisateur coche bien tous les critères pour accéder à la page
     const checkAdminAccess = async () => {
-      //Récupération du token depuis le localStorage
-      let token = getAuthToken();
-      //Déjà, si il n'y a pas de token c'est que l'user n'est pas connecté
-      if (!token) {
-        setValidated(true);
-        return;
+      let token;
+
+      try {
+        //Récupération du token depuis le localStorage
+        token = getAuthToken();
+        //Déjà, si il n'y a pas de token c'est que l'user n'est pas connecté
+        if (!token) {
+          setValidated(true);
+          return;
+        }
+      } catch (error) {
+        handleError(error);
       }
       // ----------------- ON VÉRIFIE SI LE TOKEN EST TOUJOURS VALIDE -----------------
       try {
@@ -45,7 +58,7 @@ const IsAdmin = () => {
             await refreshAccessToken(); // cela devrait mettre à jour le token dans le localStorage
             token = getAuthToken(); // On récupère le nouveau token
           } catch (error) {
-            console.error("Échec du refresh token :", error);
+            handleError(error);
             toast.error("Session expirée, veuillez vous reconnecter.");
             setValidated(true);
             return;
@@ -62,7 +75,7 @@ const IsAdmin = () => {
           //Sinon 404
         }
       } catch (error) {
-        console.error("Erreur de décodage ou refresh :", error);
+        handleError(error);
       }
 
       setValidated(true);

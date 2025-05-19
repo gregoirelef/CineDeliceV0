@@ -16,27 +16,23 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 // fonction pour créer un film
 export async function createMotions(formData) {
-  try {
-    // Envoi de la requête POST pour créer une nouvelle oeuvre
-    // on précise la méthode et le contenu du header avec le token
-    const response = await authFetch(`${API_URL}/motions`, {
-      method: "POST",
-      body: formData,
-      credentials: "include",
-    });
-    // on récupère la réponse de l'API (ici la création d'un film)
-    const dataMotion = await response.json();
-    // Vérification du succès de la réponse
-    if (!response.ok) {
-      throw new Error(dataMotion?.details?.[0] || "Une erreur est survenue lors de l'enregistrement en BDD");
-    }
-    // on renvoie les données
-    return dataMotion;
-    // si une erreur survient on l'indique.
-  } catch (error) {
-    console.error("Erreur lors de l'ajout de l'oeuvre':", error);
+  // Envoi de la requête POST pour créer une nouvelle oeuvre
+  // on précise la méthode et le contenu du header avec le token
+  const response = await authFetch(`${API_URL}/motions`, {
+    method: "POST",
+    body: formData,
+    credentials: "include",
+  });
+  // on récupère la réponse de l'API (ici la création d'un film)
+  const dataMotion = await response.json();
+  // Vérification du succès de la réponse
+  if (!response.ok) {
+    const error = new Error(dataMotion?.details?.[0] || "Erreur lors de la création de l'œuvre");
+    error.status = response.status; // 👈 on attache le status
     throw error;
   }
+  // on renvoie les données
+  return dataMotion;
 }
 
 /**
@@ -49,24 +45,17 @@ export async function createMotions(formData) {
 
 //récupérer toutes les formats des oeuvres
 export async function getAllMotionsFormats() {
-  // on met dans un try-catch pour recupérer les erreurs
-  try {
-    // on fait la demande API avec la route paramétrée du back
-    const response = await fetch(`${API_URL}/motionsFormats`);
-    // Vérification du succès de la réponse
-    if (!response.ok) {
-      // Gestion des erreurs HTTP
-      throw new Error(`Erreur HTTP : ${response.status} ${response.statusText}`);
-    }
-    // on récupère la réponse de l'API (ici tous les formats des oeuvres)
-    const dataMotionsFormats = await response.json();
-    // on renvoie les données
-    return dataMotionsFormats;
-    // si une erreur survient on l'indique.
-  } catch (error) {
-    console.error("Erreur lors de la récupération des formats des oeuvres:", error);
-    return;
+  // on fait la demande API avec la route paramétrée du back
+  const response = await fetch(`${API_URL}/motionsFormats`);
+  // Vérification du succès de la réponse
+  if (!response.ok) {
+    // Gestion des erreurs HTTP
+    throw new Error(`Erreur HTTP : ${response.status} ${response.statusText}`);
   }
+  // on récupère la réponse de l'API (ici tous les formats des oeuvres)
+  const dataMotionsFormats = await response.json();
+  // on renvoie les données
+  return dataMotionsFormats;
 }
 
 /**
@@ -105,24 +94,17 @@ export async function getAllMotionsGenres() {
  * @throws {Error} - Si une erreur se produit lors de la récupération des données.
  */
 export async function getAllMotions() {
-  // on met dans un try-catch pour recupérer les erreurs
-  try {
-    // on fait la demande API avec la route paramétrée du back
-    const response = await fetch(`${API_URL}/motions`);
-    // Vérification du succès de la réponse
-    if (!response.ok) {
-      //  Gestion des erreurs HTTP
-      throw new Error(`Erreur HTTP : ${response.status} ${response.statusText}`);
-    }
-    // on récupère la réponse de l'API (ici toutes les oeuvres)
-    const dataMotions = await response.json();
-    // on renvoie les données
-    return dataMotions;
-    // si une erreur survient on l'indique.
-  } catch (error) {
-    console.error("Erreur lors de la récupération des oeuvres :", error);
-    return;
+  // on fait la demande API avec la route paramétrée du back
+  const response = await fetch(`${API_URL}/motions`);
+  // Vérification du succès de la réponse
+  if (!response.ok) {
+    //  Gestion des erreurs HTTP
+    throw new Error(`Erreur HTTP : ${response.status} ${response.statusText}`);
   }
+  // on récupère la réponse de l'API (ici toutes les oeuvres)
+  const dataMotions = await response.json();
+  // on renvoie les données
+  return dataMotions;
 }
 
 /**
@@ -133,24 +115,17 @@ export async function getAllMotions() {
  * @throws {Error} - Si une erreur se produit lors de la récupération des données.
  */
 export async function getAllGenres() {
-  // on met dans un try-catch pour recupérer les erreurs
-  try {
-    // on fait la demande API avec la route parrametré du back
-    const response = await fetch(`${API_URL}/genres`);
-    // Vérification du succès de la réponse
-    if (!response.ok) {
-      // Gestion des erreurs HTTP
-      throw new Error(`Erreur HTTP : ${response.status} ${response.statusText}`);
-    }
-    // on récupere la réponse de l'API (ici toutes les oeuvres)
-    const dataGenres = await response.json();
-    // on renvois les données
-    return dataGenres;
-    // si une erreur survient on l'indique.
-  } catch (error) {
-    console.error("Erreur lors de la récupération des genres :", error);
-    return;
+  // on fait la demande API avec la route parrametré du back
+  const response = await fetch(`${API_URL}/genres`);
+  // Vérification du succès de la réponse
+  if (!response.ok) {
+    // Gestion des erreurs HTTP
+    throw new Error(`Erreur HTTP : ${response.status} ${response.statusText}`);
   }
+  // on récupere la réponse de l'API (ici toutes les oeuvres)
+  const dataGenres = await response.json();
+  // on renvois les données
+  return dataGenres;
 }
 
 /**
@@ -163,21 +138,14 @@ export async function getAllGenres() {
  
  */
 export async function getMotionById(id) {
-  // on met dans un try-catch pour recupérer les erreurs
-  try {
-    // on fait la demande API avec la route parramétrée du back et l'id de la recette
-    const response = await fetch(`${API_URL}/motions/${id}`);
-    // on récupère la réponse de l'API (ici le film ciblé)
-    const motion = await response.json();
-    // on vérifie que l'on a une réponse
-    if (!response.ok) {
-      throw new Error("Erreur lors de la récupération de la recette");
-    }
-    // on renvoie les données
-    return motion;
-    // si une erreur survient on l'indique
-  } catch (error) {
-    console.error("Erreur dans getRecipeById:", error.message);
-    throw error;
+  // on fait la demande API avec la route parramétrée du back et l'id de la recette
+  const response = await fetch(`${API_URL}/motions/${id}`);
+  // on récupère la réponse de l'API (ici le film ciblé)
+  const motion = await response.json();
+  // on vérifie que l'on a une réponse
+  if (!response.ok) {
+    throw new Error("Erreur lors de la récupération de la recette");
   }
+  // on renvoie les données
+  return motion;
 }

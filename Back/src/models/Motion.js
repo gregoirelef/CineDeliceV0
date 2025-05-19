@@ -58,7 +58,6 @@ Motion.init(
 Motion.beforeDestroy(async (motion) => {
   // si il y a une picture associé a la motion alors:
   if (motion.picture) {
-    console.log("Hook beforeDestroy appelé pour :", motion.title);
     // on récupère le chemin de l'immage associé a l'instance qui va etre suprimmer
     const completPath = path.join(__dirname, "../../public", motion.picture);
     try {
@@ -66,7 +65,6 @@ Motion.beforeDestroy(async (motion) => {
       await fs.unlink(completPath);
       //fs pour filer systeme permet de manipuler les fichiers et dossiers
       //unlink pour suprimme un fichier
-      console.log("Image supprimée :", completPath);
     } catch (error) {
       //si une erreur survient alors on la log
       console.error("Erreur lors de la suppression de l'image :", error.message);
@@ -90,7 +88,6 @@ Motion.beforeUpdate(async (motion) => {
       try {
         // On tente de supprimer l'ancienne image du système de fichiers (fs.unlink etant une methode Node.js qui suprimme un fichier du système.)
         await fs.unlink(oldImagePath);
-        console.log("Ancienne image supprimée :", oldImagePath);
       } catch (err) {
         // Si une erreur survient (par exemple, fichier déjà supprimé ou introuvable), on l'affiche dans la console
         console.error("Erreur lors de la suppression de l'ancienne image :", err.message);

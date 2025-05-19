@@ -34,12 +34,14 @@ import userController from "./controllers/userController.js";
 // ─── Utilitaires ──────────────────────────────────────────────────────────────
 import upload from "./utils/multer.js";
 
-
 const router = Router();
 
 // ─── ROUTES RECETTES ──────────────────────────────────────────────────────────
 
 router.get("/recipes", recipeController.getAllRecipes);
+// pour l'erreur 404
+router.get("/recipes/search", recipeController.getRecipesBySearch);
+// pour l'erreur 500
 router.get("/recipes/search/:search", recipeController.getRecipesBySearch);
 router.get("/recipes/:id", validateIdParam, recipeController.getOneRecipe);
 router.post("/recipes", isAuthenticated, upload.single("picture"), validate(createRecipeSchema), recipeController.createOneRecipe);
@@ -71,14 +73,30 @@ router.delete("/admin/recipes/:id", validateIdParam, isAuthenticated, isAdmin, r
 router.post("/admin/ingredients", isAuthenticated, isAdmin, validate(createIngredientSchema), ingredientsController.createOneIngredient);
 router.delete("/admin/ingredients/:id", validateIdParam, isAuthenticated, isAdmin, ingredientsController.deleteOneIngredient);
 router.delete("/admin/motions/:id", validateIdParam, isAuthenticated, isAdmin, motionController.deleteOneMotion);
-router.patch("/admin/recipes/:id", isAuthenticated, isAdmin, upload.single("picture"), validate(updateRecipeSchema), recipeController.modifyOneRecipe);
-router.patch("/admin/motions/:id", isAuthenticated, isAdmin, upload.single("picture"), validate(updateMotionSchema), motionController.modifyOneMotion);
+router.patch(
+  "/admin/recipes/:id",
+  validateIdParam,
+  isAuthenticated,
+  isAdmin,
+  upload.single("picture"),
+  validate(updateRecipeSchema),
+  recipeController.modifyOneRecipe
+);
+router.patch(
+  "/admin/motions/:id",
+  validateIdParam,
+  isAuthenticated,
+  isAdmin,
+  upload.single("picture"),
+  validate(updateMotionSchema),
+  motionController.modifyOneMotion
+);
 // ─── ROUTES OEUVRES (MOTIONS) ─────────────────────────────────────────────────
 
 router.get("/motions", motionController.getAllMotions);
 router.post("/motions", isAuthenticated, upload.single("picture"), validate(createMotionSchema), motionController.createOneMotion);
-router.get("/motions/:id", motionController.getOneMotion);
-router.delete("/motions/:id", motionController.deleteOneMotion);
+router.get("/motions/:id", validateIdParam, motionController.getOneMotion);
+router.delete("/motions/:id", validateIdParam, motionController.deleteOneMotion);
 router.get("/motionsFormats", motionController.getAllMotionsFormats);
 router.get("/motionsGenres", motionController.getAllMotionsGenres);
 

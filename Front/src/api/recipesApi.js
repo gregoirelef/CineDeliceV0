@@ -11,23 +11,16 @@ const API_URL = import.meta.env.VITE_API_URL;
  */
 
 export async function getRecipes() {
-  // on met dans un try-catch pour recupérer les erreurs
-  try {
-    // on fait la demande API avec la route parametrée du back
-    const response = await fetch(`${API_URL}/recipes`);
-    // on récupère la réponse de l'API (ici les recettes disponibles)
-    const dataRecipes = await response.json();
-    // on vérifie que l'on a une réponse
-    if (!response.ok) {
-      throw new Error("Erreur lors de la récupération des recettes");
-    }
-    // on renvoie les données
-    return dataRecipes;
-    // si une erreur survient on l'indique
-  } catch (error) {
-    console.error("Erreur dans getRecipes:", error.message);
-    throw error;
+  // on fait la demande API avec la route parametrée du back
+  const response = await fetch(`${API_URL}/recipes`);
+  // on récupère la réponse de l'API (ici les recettes disponibles)
+  const dataRecipes = await response.json();
+  // on vérifie que l'on a une réponse
+  if (!response.ok) {
+    throw new Error("Erreur lors de la récupération des recettes");
   }
+  // on renvoie les données
+  return dataRecipes;
 }
 
 /**
@@ -40,27 +33,21 @@ export async function getRecipes() {
  */
 
 export async function getRecipeById(id) {
-  // on met dans un try-catch pour recupérer les erreurs
-  try {
-    // on fait la demande API avec la route paramétrée du back et l'id de la recette
-    const response = await fetch(`${API_URL}/recipes/${id}`);
+  // on fait la demande API avec la route paramétrée du back et l'id de la recette
+  const response = await fetch(`${API_URL}/recipes/${id}`);
 
-    // on récupere la réponse de l'API (ici la recette ciblé)
-    const recipe = await response.json();
+  // on récupere la réponse de l'API (ici la recette ciblé)
+  const recipe = await response.json();
 
-    // on vérifie que la réponse est valide
-    // on vérifie que l'on a une réponse
-    if (!response.ok) {
-      throw new Error("Erreur lors de la récupération des recettes");
-    }
-    // on renvoie les données
-    return recipe;
-
-    // si une erreur survient on l'indique
-  } catch (error) {
-    console.error("Erreur dans getRecipeById:", error.message);
+  // on vérifie que la réponse est valide
+  // on vérifie que l'on a une réponse
+  if (!response.ok) {
+    const error = new Error(recipe?.details?.[0] || "Erreur lors de la récupération des recettes");
+    error.status = response.status; // Ajoute le code HTTP ici
     throw error;
   }
+  // on renvoie les données
+  return recipe;
 }
 
 /**
@@ -73,26 +60,22 @@ export async function getRecipeById(id) {
  * @throws {Error} - Si une erreur se produit lors de la création de la recette.
  */
 export async function createRecipes(formData) {
-  try {
-    // on fait la demande API avec la route paramétrée du back
-    // on précise la méthode et le contenu du header avec le token
-    const response = await authFetch(`${API_URL}/recipes`, {
-      method: "POST",
-      body: formData,
-    });
-    // on récupère la réponse de l'API (ici les données de la recette crée)
-    const dataRecipe = await response.json();
-    // on vérifie que l'on a une réponse
-    if (!response.ok) {
-      throw new Error(dataRecipe?.details?.[0] || "Une erreur est survenue lors de l'enregistrement en BDD");
-    }
-    // on renvoie les données
-    return dataRecipe;
-    // si une erreur survient on l'indique
-  } catch (error) {
-    console.error("Erreur lors de la création de recette:", error.message);
+  // on fait la demande API avec la route paramétrée du back
+  // on précise la méthode et le contenu du header avec le token
+  const response = await authFetch(`${API_URL}/recipes`, {
+    method: "POST",
+    body: formData,
+  });
+  // on récupère la réponse de l'API (ici les données de la recette crée)
+  const dataRecipe = await response.json();
+  // on vérifie que l'on a une réponse
+  if (!response.ok) {
+    const error = new Error(dataRecipe?.details?.[0] || "Erreur lors de la connexion");
+    error.response = response; //  on attache le status
     throw error;
   }
+  // on renvoie les données
+  return dataRecipe;
 }
 
 /**
@@ -105,22 +88,17 @@ export async function createRecipes(formData) {
  */
 
 export async function getRecipeBySearch(search) {
-  // on met dans un try-catch pour récupérer les erreurs
-  try {
-    // on fait la demande API avec la route paramétrée du back, le mot rechercher
-    const response = await fetch(`${API_URL}/recipes/search/${search}`);
-    // on récupère la réponse de l'API (ici les recettes trouvées avec le mot recherché)
-    const foundRecipes = await response.json();
-    // on vérifie que l'on a une réponse
-    if (!response.ok) {
-      throw new Error(foundRecipes?.details?.[0] || "Une erreur est survenue lors de l'enregistrement en BDD");
-    }
-    console.log(foundRecipes);
-    // on renvoie les données
-    return foundRecipes;
-    // si une erreur survient on l'indique
-  } catch (error) {
-    console.error("Erreur lors de la création de recette:", error.message);
+  // on fait la demande API avec la route paramétrée du back, le mot rechercher
+  const response = await fetch(`${API_URL}/recipes/search/${search}`);
+  // on récupère la réponse de l'API (ici les recettes trouvées avec le mot recherché)
+  const foundRecipes = await response.json();
+  // on vérifie que l'on a une réponse
+  if (!response.ok) {
+    const error = new Error(foundRecipes?.details?.[0] || "Erreur lors de la connexion");
+    error.response = response; //  on attache le status
     throw error;
   }
+
+  // on renvoie les données
+  return foundRecipes;
 }

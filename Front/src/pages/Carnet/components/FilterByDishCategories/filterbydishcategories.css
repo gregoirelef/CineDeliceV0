@@ -12,7 +12,6 @@
 }
 
 .dish__category-filter {
-  flex: 0 1 200px; /* largeur max par item */
   text-align: center;
   padding: 1rem;
   border-radius: 15px;
@@ -48,6 +47,9 @@
   }
 }
 @media (min-width: 1000px) {
+  .dish__category-filter {
+    flex: 0 1 200px; /* largeur max par item */
+  }
   .dish__category-img {
     max-width: 60%;
   }

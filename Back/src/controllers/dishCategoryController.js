@@ -7,10 +7,9 @@ const dishCategoryController = {
    * @function getAllDishesCategories
    * @param {import('express').Request} req - Requête Express
    * @param {import('express').Response} res - Réponse Express
-   * @param {Function} next - Fonction middleware suivante
    * @returns {Promise<void>}
    */
-  async getAllDishesCategories(req, res, next) {
+  async getAllDishesCategories(req, res) {
     const categories = await DishCategory.findAll();
     // Si catégories trouvées, on les renvoie au format JSON avec un statut 200
     res.status(200).json(categories);
