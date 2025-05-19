@@ -15,7 +15,7 @@ app.use(cookieParser()); // Le middleware pour parser les cookies
 
 app.use(express.json()); // Middleware pour parser le corps des requêtes JSON
 
-const allowedOrigins = process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(",") : ["http://localhost:5173"];
+const allowedOrigins = process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(",") : ["https://localhost:5173"];
 
 app.use(
   cors({
